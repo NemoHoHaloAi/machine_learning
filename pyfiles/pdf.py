@@ -10,25 +10,23 @@ def st_norm(u):
                      for i,a in enumerate(T)])),-16)
      p=0.5-0.5*E if u<0 else 0.5+0.5*E
      return(p)
-  
+
 def norm(a,sigma,x):
      '''一般正态分布'''
      u=(x-a)/sigma
      return(st_norm(u))
-  
+
 L=[]
 while 1:
      '''输入一个数时默认为标准正态分布
      输入三个数(空格隔开)时分别为期望、方差、x
      输入 stop 停止'''
-     S=input('please input the parameters:\n')
-     print S
-     S = str(S)
+     S=raw_input('please input the parameters:\n')
      if S=='stop':break
      try:
-         L=[float(s) for s in S.split()]
+         L=[float(s) for s in S.split(',')]
      except:
-	 print L
+         print L
          print('Input error!')
          continue
      if len(L)==1:
@@ -37,4 +35,5 @@ while 1:
          print('f(x)=%.5f'%norm(L[0],L[1],L[2]))
      else:
          print('Input error!')
+
 
