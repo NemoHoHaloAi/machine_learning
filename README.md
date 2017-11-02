@@ -1,4 +1,4 @@
-# machine_learning_
+# machine_learning
 
 ```
 【开学任务清单】
