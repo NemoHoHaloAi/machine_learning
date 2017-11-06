@@ -14,7 +14,7 @@ population_ages = []
 for i in range(10000):
     population_ages.append(random.randint(1,110))
 '''
-population_ages = np.loadtxt('facebook.csv', delimiter=',', unpack=True)
+population_ages = np.loadtxt('congruent_diff.csv', delimiter=',', unpack=True)
 population_ages = sorted(population_ages)
 print population_ages[0]
 print population_ages[-1]
