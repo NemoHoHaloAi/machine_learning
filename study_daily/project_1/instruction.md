@@ -10,4 +10,34 @@
   
 3. 注意：
   集中例-》均值，变异例-〉标准差/方差，然后也可以选其他量
+  
+实验stroop:
+	1.同一组样本；
+	2.分别在一致和不一致的情况下进行实验；
+	3.记录实验所需时间；
+	
+congruent		incongruent
+12				17
+8				15
+10				12
+9				20
+
+实验性统计检验
+相依样本
+Ho:mu_congruent=mu_incongruent
+Ha:mu_congruent≠mu_incongruent
+双尾检验
+α:0.05
+自由度df:24+24-2
+t临界值:2.2009(maybe)
+样本量:n
+congruent偏差平方和:sum(sum_d_congruent)
+incongruent偏差平方和:sum(sum_d_incongruent)
+congruent_sd:sqrt(sum_d_congruent/(n-1))
+incongruent_sd:sqrt(sum_d_incongruent/(n-1))
+样本量一致不需要方差求和
+使用公式：
+t_statistic=(mu_congruent-mu_incongruent)/(sqrt((congruent_sd/n)+(incongruent_sd/n)))
+置信区间:
+r^2:t_statistic^2/(t_statistic^2+df)
 ```
