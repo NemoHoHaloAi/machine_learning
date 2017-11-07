@@ -9,3 +9,6 @@
 
 ### 配对t计算流程分析
 > http://www.statstutor.ac.uk/resources/uploaded/paired-t-test.pdf
+
+### MBA智库
+> http://wiki.mbalib.com
