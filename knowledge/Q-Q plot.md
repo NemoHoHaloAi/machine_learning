@@ -17,4 +17,5 @@ PS：当然也可以用KS检验，利用python中scipy.stats.ks_2samp函数可�
 那么样本数据集的点应该都落在参考线附近；反之如果距离越远，这说明这两组数据很可能来自不同的分布。
 
 http://www.cnblogs.com/arkenstone/p/5763069.html
+http://data.library.virginia.edu/understanding-q-q-plots/
 ```
