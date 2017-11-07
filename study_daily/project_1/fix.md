@@ -36,5 +36,11 @@ Q5：正确执行并报告了一项统计检验，包括检验统计量、P 值�
 3. 执行统计检验：
   问题：不应该使用合并标准差来计算，因为合并标准差适用于估计单个标准差以表示研究中所有独立样本或组的方法，且需要样本所在总体具有相同的标准差；
   正确计算流程：
-    1. 
+    1. calc diff；
+    2. calc mu_diff;
+    3. calc sd=sqrt(sum()/(n-1));
+    4. calc se=sd/sqrt(n);
+    5. calc t_statistic = mu_diff/se;
+    6. get t_critical from t-table(alpha=0.05,tow tail,df=n-1);
+    7. compare t_statistic and t_critical and give the answer;
 ```
