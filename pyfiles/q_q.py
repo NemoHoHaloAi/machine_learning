@@ -18,7 +18,8 @@ np_b = np.array((array_b))
 
 x=[]
 y=[]
-#np.percentile(np_a,k/10.0)
+#np.percentile(np_a,k)
+#计算以np_a为数据集，k%位置对应的数据点
 for i in range(1,100):
     x.append(np.percentile(np_a,i))
     y.append(np.percentile(np_b,i))
