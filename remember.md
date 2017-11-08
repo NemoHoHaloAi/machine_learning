@@ -12,3 +12,6 @@
 
 ### MBA智库
 > http://wiki.mbalib.com
+
+### statistic show to
+> http://www.statisticshowto.com/q-q-plots/
