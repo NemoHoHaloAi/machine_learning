@@ -24,3 +24,6 @@
 
 ### jupyter
 > http://python.jobbole.com/87527/?repeat=w3tc
+
+### jupyter技巧
+> http://blog.csdn.net/tina_ttl/article/details/51031113
