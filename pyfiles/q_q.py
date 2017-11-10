@@ -38,10 +38,12 @@ print y_b
 
 plt.figure(0)
 plt.scatter(x_a,y_a, color='k', s=25, marker="o")
+plt.plot([0,30],[0,30])
 plt.title('Q-Q')
 plt.legend()
 plt.figure(1)
 plt.scatter(x_b,y_b, color='b', s=25, marker="o")
+plt.plot([0,30],[0,30])
 plt.title('Q-Q')
 plt.legend()
 plt.show()
