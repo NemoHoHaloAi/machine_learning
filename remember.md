@@ -16,6 +16,9 @@
 ### statistic show to
 > http://www.statisticshowto.com/q-q-plots/
 
+### 为什么选择anacode
+> http://www.jianshu.com/p/169403f7e40c
+
 ### anacoda
 > http://blog.csdn.net/zhdgk19871218/article/details/46502637
 
