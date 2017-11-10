@@ -15,3 +15,6 @@
 
 ### statistic show to
 > http://www.statisticshowto.com/q-q-plots/
+
+### jupyter
+> http://python.jobbole.com/87527/?repeat=w3tc
