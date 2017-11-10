@@ -16,5 +16,8 @@
 ### statistic show to
 > http://www.statisticshowto.com/q-q-plots/
 
+### anacoda
+> http://blog.csdn.net/zhdgk19871218/article/details/46502637
+
 ### jupyter
 > http://python.jobbole.com/87527/?repeat=w3tc
