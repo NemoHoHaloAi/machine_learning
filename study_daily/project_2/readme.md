@@ -26,4 +26,9 @@ Python 模块 - 此模块有一个名为 open_movies_page的函数，它将一�
 
 对于这个项目，你需要提交一个命名为 movie_website.zip 的项目压缩文件。
 此压缩文件应该包含三个 Python 文件：media.py、entertainment_center.py 和 fresh_tomatoes.py。
+
+PS:运行该项目生成静态页面步骤如下
+	1. python entertainment_center.py
+	2. 输入喜欢的电影名，每输入一个回车来表示确定，输入stop结束
+	3. 浏览器中打开生成的静态页面
 ```
