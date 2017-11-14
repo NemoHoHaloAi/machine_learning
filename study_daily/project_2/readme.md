@@ -29,6 +29,6 @@ Python 模块 - 此模块有一个名为 open_movies_page的函数，它将一�
 
 PS:运行该项目生成静态页面步骤如下
 	1. python entertainment_center.py
-	2. 输入喜欢的电影名，每输入一个回车来表示确定，输入stop结束
+	2. 输入喜欢的电影名，中文逗号分割
 	3. 浏览器中打开生成的静态页面
 ```

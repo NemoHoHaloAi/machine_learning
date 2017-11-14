@@ -6,7 +6,7 @@
 '''
 
 from media import Movie
-from fresh_tomatoes import HtmlCreator
+from fresh_tomatoes import open_movies_page
 from scantter import get
 
 import sys
@@ -25,8 +25,11 @@ if __name__ == '__main__':
         movies += get(key)
     for movie in movies:
         print movie
+    open_movies_page(movies)
+    '''
     html = HtmlCreator.create(movies)
     print html
     htmlFile = open('favorite.html','w')
     htmlFile.write(html)
     htmlFile.close()
+    '''
