@@ -3,7 +3,7 @@
 ### 运行该项目
 1. 需要安装有beautifulsoup库
 2. python entertainment_center.py
-3. 输入喜欢的电影名（支持模糊），并使用中文逗号分割，回车结束
+3. 输入喜欢的电影名（支持模糊），并使用中文逗号分割，回车结束，例如（功夫，飞机，爱情，阿凡达）
 4. 打开fresh_tomotoes.html
 
 ### 功能实现流程分析
