@@ -1,4 +1,11 @@
 # project 2 read me
+
+### 运行该项目
+1. 需要安装有beautifulsoup库
+2. python entertainment_center.py
+3. 输入喜欢的电影名（支持模糊），并使用中文逗号分割，回车结束
+4. 打开fresh_tomotoes.html
+
 ### 功能实现流程分析
 1. 接受用户输入喜爱的电影名，逗号分割
 2. 使用爬虫爬取豆瓣搜索该电影的信息
