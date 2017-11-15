@@ -28,12 +28,7 @@ Python 模块 - 此模块有一个名为 open_movies_page的函数，它将一�
 
 
 ### 工程中参考文档：
-> version 1:
-豆瓣API https://developers.douban.com/wiki/?title=movie_v2#search
-fix 1:
-发现使用豆瓣播放是个问题，豆瓣网页中不一定有播放链接
-现修改为从泡饭影视网站拉取数据
-http://www.chapaofan.com/4505.html
-http://player.youku.com/jsapi
-参考一篇beautifulsoup的博客
-http://cuiqingcai.com/1319.html
+1. 豆瓣API https://developers.douban.com/wiki/?title=movie_v2#search
+2. 发现使用豆瓣播放是个问题，豆瓣网页中不一定有播放链接
+3. 现修改为从泡饭影视网站拉取数据 http://www.chapaofan.com/4505.html http://player.youku.com/jsapi
+4. 参考一篇beautifulsoup的博客 http://cuiqingcai.com/1319.html
