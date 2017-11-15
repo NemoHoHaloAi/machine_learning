@@ -1,5 +1,5 @@
 # project 2 read me
-```
+### 功能实现流程分析
 1. 接受用户输入喜爱的电影名，逗号分割
 2. 使用爬虫爬取豆瓣搜索该电影的信息
 3. 提取其中我们需要的信息生成对应的Movie对象
@@ -8,8 +8,7 @@
 6. 注意静态页面的排版以及点击播放，鼠标停放显示详情等功能的实现
 7. 子类:Movie.....
 
-项目提交
-
+### 项目提交
 在这个项目中，你将用编写代码，存储你最喜爱的电影信息，包括剧照和电影预告片网址。
 然后编写一个静态网页，允许网页访客浏览电影和观看预告片。
 
@@ -23,16 +22,12 @@ Python 模块 - 此模块有一个名为 open_movies_page的函数，它将一�
 （ 2017年11月13日更新：这个fresh_tomatoes.py同时兼容 YouTube 和 Youku 的链接，
 需要把你自己的 Movie 类中 trailer_youtube_url 属性改成 trailer_url）
 4. 确保在浏览器中加载你的网站时，它能正确渲染。
-
 对于这个项目，你需要提交一个命名为 movie_website.zip 的项目压缩文件。
 此压缩文件应该包含三个 Python 文件：media.py、entertainment_center.py 和 fresh_tomatoes.py。
 
-PS:运行该项目生成静态页面步骤如下
-	0. 需要安装bs4模块
-	1. python entertainment_center.py
-	2. 输入喜欢的电影名，中文逗号分割，回车结束
-	
-参考：
+
+
+### 工程中参考文档：
 version 1:
 豆瓣API https://developers.douban.com/wiki/?title=movie_v2#search
 fix 1:
@@ -42,4 +37,3 @@ http://www.chapaofan.com/4505.html
 http://player.youku.com/jsapi
 参考一篇beautifulsoup的博客
 http://cuiqingcai.com/1319.html
-```
