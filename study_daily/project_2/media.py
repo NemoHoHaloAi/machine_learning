@@ -64,5 +64,5 @@ class Movie:
             self.directors.append(Director(director['name'], director['avatars']['medium'], director['alt']))
 
     def __str__(self):
-        return '{title:' + self.title + ',score:' + str(self.score) + ',stars:' + str(self.stars) + ',year:' + str(self.year) + ',trailer_url:' + self.trailer_url + '}'
+        return '{title:' + self.title + ',score:' + str(self.score) + ',stars:' + str(self.stars) + ',year:' + str(self.year)# + ',trailer_url:' + self.trailer_url + '}'
 

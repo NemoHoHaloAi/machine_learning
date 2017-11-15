@@ -42,8 +42,8 @@ def get(key):
     return movies if len(movies) > 0 else None
 
 
+'''
 if __name__ == '__main__':
-    '''
     movies = get('我是')
     for movie in movies:
         print movie
@@ -54,7 +54,9 @@ if __name__ == '__main__':
         for director in movie.directors:
             print director
     '''
-    res = urllib.urlopen('http://www.chapaofan.com/search/猩球')
+def get2(key):
+    movies = []
+    res = urllib.urlopen('http://www.chapaofan.com/search/' + key)
     soup = BeautifulSoup(res.read(), 'lxml')
     # filter with class='item'
     items = soup.select('.item')
@@ -64,10 +66,7 @@ if __name__ == '__main__':
         first_span = item.select('span')[0]
         five_li = item.select('li')[4]
         six_li = item.select('li')[5]
-        print second_a
-        print first_span
-        print five_li
-        print six_li
+        print '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
         # get video title
         title = second_a['title']
         print title
@@ -86,5 +85,32 @@ if __name__ == '__main__':
         # get video play outside url
         outside_url = second_a['href']
         print outside_url
-        #res_outside = urllib.urlopen(outside_url)
-        #soup_play = BeautifulSoup(res_outside.read(), 'lxml')
+        res_outside = urllib.urlopen(outside_url)
+        soup_outside = BeautifulSoup(res_outside.read(), 'lxml')
+        trailer_url = None
+        for script in soup_outside.select('script'):
+            if 'youkuplayer' in str(script):
+                script = str(script).replace(' ','').replace('\t','').replace('\n','').replace(' ','')
+                script = script[script.index('{'):script.index('}')+1]
+                vid_start = script.index('vid:\'') + len('vid:\'')
+                vid_end = (script[vid_start+1:]).find('\'') + 1 + vid_start
+                clientid_start = script.index('client_id:\'') + len('client_id:\'')
+                clientid_end = (script[clientid_start+1:]).find('\'') + 1 + clientid_start
+                # get trailer_url
+                trailer_url = 'http://player.youku.com/embed/' + script[vid_start:vid_end] + '?autoplay=true&' + 'client_id=' + script[clientid_start:clientid_end]
+                print trailer_url
+        movie = Movie(
+                title,#电影标题
+                score,#电影评分
+                100,#星星数
+                10000,#电影收藏次数
+                category.split('、'),#电影分类
+                [],#电影主演
+                [],#电影导演
+                2000,#上映时间
+                poster_image_url,#电影海报
+                trailer_url)
+        movies.append(movie)
+        print '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
+    return movies
+        

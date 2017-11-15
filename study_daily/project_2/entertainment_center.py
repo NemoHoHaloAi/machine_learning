@@ -7,7 +7,7 @@
 
 from media import Movie
 from fresh_tomatoes import open_movies_page
-from scantter import get
+from scantter import get,get2
 
 import sys
 
@@ -22,7 +22,7 @@ if __name__ == '__main__':
     keys = user_input()
     movies = []
     for key in keys:
-        movies += get(key)
+        movies += get2(key)
     for movie in movies:
         print movie
     open_movies_page(movies)

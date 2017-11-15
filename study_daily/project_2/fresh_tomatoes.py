@@ -137,9 +137,13 @@ def create_movie_tiles_content(movies):
         trailer_youku_id = youku_id_match.group(2) if youku_id_match else None
         trailer_youtube_id = youtube_id_match.group(0) if youtube_id_match else None
         if trailer_youku_id != None:
-          trailer_src = 'http://player.youku.com/embed/' + trailer_youku_id
-        else:
+          trailer_src = movie.trailer_url
+        elif trailer_youtube_id != None:
           trailer_src = 'http://youtube.com/embed/'+ trailer_youtube_id
+        else:
+          trailer_src = None
+        trailer_src = movie.trailer_url
+        print 'trailer_src:' + trailer_src
 
         # Append the tile for the movie with its content filled in
         content += movie_tile_content.format(
