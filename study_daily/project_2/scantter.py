@@ -1,9 +1,8 @@
 #-*- coding: utf-8 -*-
-
-'''
+"""
 该module主要负责根据关键字去豆瓣爬取相关电影信息
 并组装创建一个Movie对象
-'''
+"""
 
 from media import Movie
 
@@ -15,9 +14,20 @@ from bs4 import BeautifulSoup
 reload(sys)  
 sys.setdefaultencoding('utf-8')
 
+# 搜索结果返回个数
 search_count = 5
 
-def get(key):
+
+def get_douban(key):
+    """
+    This function for search movie info with key from douban api.
+
+    Parameters:
+        key - search key word.
+
+    Returns:
+        Return movie object list.
+    """
     response = urllib.urlopen('https://api.douban.com/v2/movie/search?q='+ key +'&count=' + str(search_count))
     html = response.read()
     jsonMap = json.loads(html)
@@ -41,20 +51,16 @@ def get(key):
 
     return movies if len(movies) > 0 else None
 
+def get_paofan(key):
+    """
+    This function for search movie info with key from paofan website.
 
-'''
-if __name__ == '__main__':
-    movies = get('我是')
-    for movie in movies:
-        print movie
-        for genre in movie.genres:
-            print genre
-        for cast in movie.casts:
-            print cast
-        for director in movie.directors:
-            print director
-    '''
-def get2(key):
+    Parameters:
+        key - search key word.
+
+    Returns:
+        Return movie object list.
+    """
     movies = []
     res = urllib.urlopen('http://www.chapaofan.com/search/' + key)
     soup = BeautifulSoup(res.read(), 'lxml')
@@ -97,7 +103,8 @@ def get2(key):
                 clientid_start = script.index('client_id:\'') + len('client_id:\'')
                 clientid_end = (script[clientid_start+1:]).find('\'') + 1 + clientid_start
                 # get trailer_url
-                trailer_url = 'http://player.youku.com/embed/' + script[vid_start:vid_end] + '?autoplay=true&' + 'client_id=' + script[clientid_start:clientid_end]
+                trailer_url = 'http://player.youku.com/embed/' + script[vid_start:vid_end] + 
+                    '?autoplay=true&' + 'client_id=' + script[clientid_start:clientid_end]
                 print trailer_url
         if not trailer_url is None:
             movie = Movie(
