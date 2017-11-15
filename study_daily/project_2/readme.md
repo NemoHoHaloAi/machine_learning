@@ -28,9 +28,15 @@ Python 模块 - 此模块有一个名为 open_movies_page的函数，它将一�
 此压缩文件应该包含三个 Python 文件：media.py、entertainment_center.py 和 fresh_tomatoes.py。
 
 PS:运行该项目生成静态页面步骤如下
+	0. 需要安装bs4模块
 	1. python entertainment_center.py
 	2. 输入喜欢的电影名，中文逗号分割，回车结束
 	
 参考：
+version 1:
 豆瓣API https://developers.douban.com/wiki/?title=movie_v2#search
+fix 1:
+发现使用豆瓣播放是个问题，豆瓣网页中不一定有播放链接
+现修改为从泡饭影视网站拉取数据
+
 ```

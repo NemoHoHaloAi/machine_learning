@@ -45,12 +45,15 @@ class Director(HtmlObject):
         return '<a></a>'
 
 class Movie:
-    def __init__(self, title, score, stars, collect_count, genres, _casts, _directors, year, poster):
+    def __init__(self, title, score, stars, collect_count, genres, _casts, _directors, year, poster_image_url, trailer_url):
         self.title = title
         self.score = score
         self.stars = stars
         self.collect_count = collect_count
         self.genres = genres
+        self.year = year
+        self.poster_image_url = poster_image_url
+        self.trailer_url = trailer_url
         self.casts = []
         for cast in _casts:
             if cast['name'] is None or cast['avatars'] is None or cast['alt'] is None or cast['avatars']['medium'] is None:continue
@@ -59,9 +62,7 @@ class Movie:
         for director in _directors:
             if director['name'] is None or director['avatars'] is None or director['alt'] is None or director['avatars']['medium'] is None:continue
             self.directors.append(Director(director['name'], director['avatars']['medium'], director['alt']))
-        self.year = year
-        self.poster = poster
 
     def __str__(self):
-        return '{title:' + self.title + ',score:' + str(self.score) + ',stars:' + str(self.stars) + ',year:' + str(self.year) + '}'
+        return '{title:' + self.title + ',score:' + str(self.score) + ',stars:' + str(self.stars) + ',year:' + str(self.year) + ',trailer_url:' + self.trailer_url + '}'
 

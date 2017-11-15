@@ -58,8 +58,8 @@
         });
         // Start playing the video whenever the trailer modal is opened
         $(document).on('click', '.movie-tile', function (event) {
-            var trailerYouTubeId = $(this).attr('data-trailer-youtube-id')
-            var sourceUrl = 'http://www.youtube.com/embed/' + trailerYouTubeId + '?autoplay=1&html5=1';
+            var trailerSrc = $(this).attr('data-trailer_src')
+            var sourceUrl = trailerSrc + '?autoplay=1&html5=1';
             $("#trailer-video-container").empty().append($("<iframe></iframe>", {
               'id': 'trailer-video',
               'type': 'text-html',
@@ -91,7 +91,7 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Main Page Content -->
     <div class="container">
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -104,94 +104,129 @@
     </div>
     <div class="container">
       
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="None" data-toggle="modal" data-target="#trailer">
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer_src="http://player.youku.com/embed/XMjg0ODU2MDY4MA==" data-toggle="modal" data-target="#trailer">
     <img src="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2219011938.jpg" width="220" height="342">
     <h2>功夫</h2>
 </div>
 
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="None" data-toggle="modal" data-target="#trailer">
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer_src="http://player.youku.com/embed/XMjg0ODU2MDY4MA==" data-toggle="modal" data-target="#trailer">
     <img src="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2043023919.jpg" width="220" height="342">
     <h2>功夫2</h2>
 </div>
 
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="None" data-toggle="modal" data-target="#trailer">
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer_src="http://player.youku.com/embed/XMjg0ODU2MDY4MA==" data-toggle="modal" data-target="#trailer">
     <img src="https://img3.doubanio.com/mpic/s24972153.jpg" width="220" height="342">
     <h2>功夫</h2>
 </div>
 
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="None" data-toggle="modal" data-target="#trailer">
-    <img src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p574160862.jpg" width="220" height="342">
-    <h2>我是传奇</h2>
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer_src="http://player.youku.com/embed/XMjg0ODU2MDY4MA==" data-toggle="modal" data-target="#trailer">
+    <img src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p1933806641.jpg" width="220" height="342">
+    <h2>功夫</h2>
 </div>
 
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="None" data-toggle="modal" data-target="#trailer">
-    <img src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2378133884.jpg" width="220" height="342">
-    <h2>我不是潘金莲</h2>
-</div>
-
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="None" data-toggle="modal" data-target="#trailer">
-    <img src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p652417775.jpg" width="220" height="342">
-    <h2>我是山姆</h2>
-</div>
-
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="None" data-toggle="modal" data-target="#trailer">
-    <img src="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2454759687.jpg" width="220" height="342">
-    <h2>爱情</h2>
-</div>
-
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="None" data-toggle="modal" data-target="#trailer">
-    <img src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2414016723.jpg" width="220" height="342">
-    <h2>爱情</h2>
-</div>
-
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="None" data-toggle="modal" data-target="#trailer">
-    <img src="https://img1.doubanio.com/f/movie/00505c87d1e80c42b36ee5e89339d2c8bb37f7a8/pics/movie/tv_default_medium.png" width="220" height="342">
-    <h2>我怕恋爱</h2>
-</div>
-
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="None" data-toggle="modal" data-target="#trailer">
-    <img src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2205363291.jpg" width="220" height="342">
-    <h2>工作</h2>
-</div>
-
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="None" data-toggle="modal" data-target="#trailer">
-    <img src="https://img3.doubanio.com/mpic/s3240091.jpg" width="220" height="342">
-    <h2>工作</h2>
-</div>
-
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="None" data-toggle="modal" data-target="#trailer">
-    <img src="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2428930187.jpg" width="220" height="342">
-    <h2>工作</h2>
-</div>
-
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="None" data-toggle="modal" data-target="#trailer">
-    <img src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2352350523.jpg" width="220" height="342">
-    <h2>毕业会考</h2>
-</div>
-
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="None" data-toggle="modal" data-target="#trailer">
-    <img src="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2261010287.jpg" width="220" height="342">
-    <h2>高考</h2>
-</div>
-
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="None" data-toggle="modal" data-target="#trailer">
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer_src="http://player.youku.com/embed/XMjg0ODU2MDY4MA==" data-toggle="modal" data-target="#trailer">
     <img src="https://img1.doubanio.com/f/movie/5081e011b4b06f1a8c3735122b38e781bd852ab6/pics/movie/movie_default_medium.png" width="220" height="342">
-    <h2>高考</h2>
+    <h2>功夫</h2>
 </div>
 
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="None" data-toggle="modal" data-target="#trailer">
-    <img src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2462513783.jpg" width="220" height="342">
-    <h2>风在追</h2>
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer_src="http://player.youku.com/embed/XMjg0ODU2MDY4MA==" data-toggle="modal" data-target="#trailer">
+    <img src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2494093630.jpg" width="220" height="342">
+    <h2>猩球崛起3：终极之战</h2>
 </div>
 
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="None" data-toggle="modal" data-target="#trailer">
-    <img src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2264377763.jpg" width="220" height="342">
-    <h2>夏洛特烦恼</h2>
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer_src="http://player.youku.com/embed/XMjg0ODU2MDY4MA==" data-toggle="modal" data-target="#trailer">
+    <img src="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p1281402537.jpg" width="220" height="342">
+    <h2>猩球崛起</h2>
 </div>
 
-<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer-youtube-id="None" data-toggle="modal" data-target="#trailer">
-    <img src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2175712032.jpg" width="220" height="342">
-    <h2>不一样的天空</h2>
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer_src="http://player.youku.com/embed/XMjg0ODU2MDY4MA==" data-toggle="modal" data-target="#trailer">
+    <img src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2196211285.jpg" width="220" height="342">
+    <h2>猩球崛起2：黎明之战</h2>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer_src="http://player.youku.com/embed/XMjg0ODU2MDY4MA==" data-toggle="modal" data-target="#trailer">
+    <img src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p1593992535.jpg" width="220" height="342">
+    <h2>决战猩球</h2>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer_src="http://player.youku.com/embed/XMjg0ODU2MDY4MA==" data-toggle="modal" data-target="#trailer">
+    <img src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p915141074.jpg" width="220" height="342">
+    <h2>人猿星球</h2>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer_src="http://player.youku.com/embed/XMjg0ODU2MDY4MA==" data-toggle="modal" data-target="#trailer">
+    <img src="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2180085848.jpg" width="220" height="342">
+    <h2>阿凡达</h2>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer_src="http://player.youku.com/embed/XMjg0ODU2MDY4MA==" data-toggle="modal" data-target="#trailer">
+    <img src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2379324633.jpg" width="220" height="342">
+    <h2>阿凡达2</h2>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer_src="http://player.youku.com/embed/XMjg0ODU2MDY4MA==" data-toggle="modal" data-target="#trailer">
+    <img src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2230170030.jpg" width="220" height="342">
+    <h2>阿凡达：创建潘多拉世界</h2>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer_src="http://player.youku.com/embed/XMjg0ODU2MDY4MA==" data-toggle="modal" data-target="#trailer">
+    <img src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2493306511.jpg" width="220" height="342">
+    <h2>阿凡达3</h2>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer_src="http://player.youku.com/embed/XMjg0ODU2MDY4MA==" data-toggle="modal" data-target="#trailer">
+    <img src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p999100330.jpg" width="220" height="342">
+    <h2>虚拟形象</h2>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer_src="http://player.youku.com/embed/XMjg0ODU2MDY4MA==" data-toggle="modal" data-target="#trailer">
+    <img src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2217080836.jpg" width="220" height="342">
+    <h2>末日浩劫</h2>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer_src="http://player.youku.com/embed/XMjg0ODU2MDY4MA==" data-toggle="modal" data-target="#trailer">
+    <img src="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2204351869.jpg" width="220" height="342">
+    <h2>亚特兰蒂斯：末日</h2>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer_src="http://player.youku.com/embed/XMjg0ODU2MDY4MA==" data-toggle="modal" data-target="#trailer">
+    <img src="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2492980799.jpg" width="220" height="342">
+    <h2>末日</h2>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer_src="http://player.youku.com/embed/XMjg0ODU2MDY4MA==" data-toggle="modal" data-target="#trailer">
+    <img src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2173648321.jpg" width="220" height="342">
+    <h2>雪国列车</h2>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer_src="http://player.youku.com/embed/XMjg0ODU2MDY4MA==" data-toggle="modal" data-target="#trailer">
+    <img src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2236181653.jpg" width="220" height="342">
+    <h2>疯狂的麦克斯4：狂暴之路</h2>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer_src="http://player.youku.com/embed/XMjg0ODU2MDY4MA==" data-toggle="modal" data-target="#trailer">
+    <img src="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2159068249.jpg" width="220" height="342">
+    <h2>雷神</h2>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer_src="http://player.youku.com/embed/XMjg0ODU2MDY4MA==" data-toggle="modal" data-target="#trailer">
+    <img src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2500451074.jpg" width="220" height="342">
+    <h2>雷神3：诸神黄昏</h2>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer_src="http://player.youku.com/embed/XMjg0ODU2MDY4MA==" data-toggle="modal" data-target="#trailer">
+    <img src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2156839164.jpg" width="220" height="342">
+    <h2>雷神2：黑暗世界</h2>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer_src="http://player.youku.com/embed/XMjg0ODU2MDY4MA==" data-toggle="modal" data-target="#trailer">
+    <img src="https://img1.doubanio.com/mpic/s1990977.jpg" width="220" height="342">
+    <h2>雷神</h2>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center" data-trailer_src="http://player.youku.com/embed/XMjg0ODU2MDY4MA==" data-toggle="modal" data-target="#trailer">
+    <img src="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2265642089.jpg" width="220" height="342">
+    <h2>累肾</h2>
 </div>
 
     </div>
