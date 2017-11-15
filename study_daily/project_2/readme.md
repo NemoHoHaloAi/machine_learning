@@ -28,7 +28,7 @@ Python 模块 - 此模块有一个名为 open_movies_page的函数，它将一�
 
 
 ### 工程中参考文档：
-version 1:
+> version 1:
 豆瓣API https://developers.douban.com/wiki/?title=movie_v2#search
 fix 1:
 发现使用豆瓣播放是个问题，豆瓣网页中不一定有播放链接
