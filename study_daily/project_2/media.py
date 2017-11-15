@@ -1,8 +1,8 @@
 #-*- coding: utf-8 -*-
 
-'''
+"""
 该Module主要负责电影实体类，演员类，导演类，以及用于实现toHtmlElement方法的父类
-'''
+"""
 
 from abc import ABCMeta, abstractmethod
 import sys
@@ -11,12 +11,24 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 class HtmlObject:
+    """
+    This class is a parent class for create html code.
+    """
     __metaclass__ = ABCMeta
 
     @abstractmethod
     def toHtmlElement(self):pass
 
 class Cast(HtmlObject):
+    """
+    This class is for save cast info, and extends HtmlObject to have toHtmlObject function.
+
+    Members:
+        TYPE - class attribute，value is cast.
+        name - instance attribute, save cast name.
+        avatars - instance attribute, save cast avatars.
+        alt - instance attribute, save cast alt.
+    """
     TYPE = 'cast'
 
     def __init__(self, name, avatars, alt):
@@ -28,9 +40,21 @@ class Cast(HtmlObject):
         return '{name:' + self.name +',type:' + Cast.TYPE + ',avatars:' + self.avatars + ',alt:' + self.alt + '}'
 
     def toHtmlElement(self):
+        """
+        This function to create a html element(Now do nothing).
+        """
         return '<a></a>'
 
 class Director(HtmlObject):
+    """
+    This class is for save director info, and extends HtmlObject to have toHtmlObject function.
+
+    Members:
+        TYPE - class attribute，value is director.
+        name - instance attribute, save director name.
+        avatars - instance attribute, save director avatars.
+        alt - instance attribute, save director alt.
+    """
     TYPE = 'director'
 
     def __init__(self, name, avatars, alt):
@@ -42,9 +66,27 @@ class Director(HtmlObject):
         return '{name:' + self.name +',type:' + Director.TYPE + ',avatars:' + self.avatars + ',alt:' + self.alt + '}'
 
     def toHtmlElement(self):
+        """
+        This function to create a html element(Now do nothing).
+        """
         return '<a></a>'
 
 class Movie:
+    """
+    This class is for save movie info.
+
+    Members:
+        title - instance attribute, save movie title.
+        score - instance attribute, save movie score.
+        stars - instance attribute, save movie stars.
+        collect_count - instance attribute, save movie collect_count.
+        genres - instance attribute, save movie genres.
+        year - instance attribute, save movie year.
+        poster_image_url - instance attribute, save movie poster_image_url.
+        trailer_url - instance attribute, save movie trailer_url.
+        casts - instance attribute, save movie casts.
+        directors - instance attribute, save movie directors.
+    """
     def __init__(self, title, score, stars, collect_count, genres, _casts, _directors, year, poster_image_url, trailer_url):
         self.title = title
         self.score = score
