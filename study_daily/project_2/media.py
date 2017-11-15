@@ -98,13 +98,16 @@ class Movie:
         self.trailer_url = trailer_url
         self.casts = []
         for cast in _casts:
-            if cast['name'] is None or cast['avatars'] is None or cast['alt'] is None or cast['avatars']['medium'] is None:continue
+            if cast['name'] is None or cast['avatars'] is None or cast['alt'] is None 
+                or cast['avatars']['medium'] is None:continue
             self.casts.append(Cast(cast['name'], cast['avatars']['medium'], cast['alt']))
         self.directors = []
         for director in _directors:
-            if director['name'] is None or director['avatars'] is None or director['alt'] is None or director['avatars']['medium'] is None:continue
+            if director['name'] is None or director['avatars'] is None or director['alt'] is None 
+                or director['avatars']['medium'] is None:continue
             self.directors.append(Director(director['name'], director['avatars']['medium'], director['alt']))
 
     def __str__(self):
-        return '{title:' + self.title + ',score:' + str(self.score) + ',stars:' + str(self.stars) + ',year:' + str(self.year)# + ',trailer_url:' + self.trailer_url + '}'
+        return '{title:' + self.title + ',score:' + str(self.score) + ',stars:' + str(self.stars) 
+            + ',year:' + str(self.year) + ',trailer_url:' + self.trailer_url + '}'
 
