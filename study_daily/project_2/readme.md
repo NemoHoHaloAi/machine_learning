@@ -39,6 +39,7 @@ fix 1:
 发现使用豆瓣播放是个问题，豆瓣网页中不一定有播放链接
 现修改为从泡饭影视网站拉取数据
 http://www.chapaofan.com/4505.html
-http://cuiqingcai.com/1319.html
 http://player.youku.com/jsapi
+参考一篇beautifulsoup的博客
+http://cuiqingcai.com/1319.html
 ```
