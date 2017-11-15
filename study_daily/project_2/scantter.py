@@ -103,7 +103,7 @@ def get_paofan(key):
                 clientid_start = script.index('client_id:\'') + len('client_id:\'')
                 clientid_end = (script[clientid_start+1:]).find('\'') + 1 + clientid_start
                 # get trailer_url
-                trailer_url = 'http://player.youku.com/embed/' + script[vid_start:vid_end] + 
+                trailer_url = 'http://player.youku.com/embed/' + script[vid_start:vid_end] + \
                     '?autoplay=true&' + 'client_id=' + script[clientid_start:clientid_end]
                 print trailer_url
         if not trailer_url is None:

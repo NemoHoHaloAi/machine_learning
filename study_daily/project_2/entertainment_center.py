@@ -7,7 +7,7 @@
 
 from media import Movie
 from fresh_tomatoes import open_movies_page
-from scantter import get,get2
+from scantter import get_douban,get_paofan
 
 import sys
 
@@ -28,14 +28,7 @@ if __name__ == '__main__':
     keys = user_input()
     movies = []
     for key in keys:
-        movies += get2(key)
+        movies += get_paofan(key)
     for movie in movies:
         print movie
     open_movies_page(movies)
-    '''
-    html = HtmlCreator.create(movies)
-    print html
-    htmlFile = open('favorite.html','w')
-    htmlFile.write(html)
-    htmlFile.close()
-    '''
