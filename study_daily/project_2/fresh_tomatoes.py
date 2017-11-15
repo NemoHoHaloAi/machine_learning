@@ -143,7 +143,7 @@ def create_movie_tiles_content(movies):
         else:
           trailer_src = None
         trailer_src = movie.trailer_url
-        print 'trailer_src:' + trailer_src
+        print 'trailer_src:' + trailer_src if not trailer_src is None else 'None'
 
         # Append the tile for the movie with its content filled in
         content += movie_tile_content.format(

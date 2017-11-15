@@ -99,18 +99,19 @@ def get2(key):
                 # get trailer_url
                 trailer_url = 'http://player.youku.com/embed/' + script[vid_start:vid_end] + '?autoplay=true&' + 'client_id=' + script[clientid_start:clientid_end]
                 print trailer_url
-        movie = Movie(
-                title,#电影标题
-                score,#电影评分
-                100,#星星数
-                10000,#电影收藏次数
-                category.split('、'),#电影分类
-                [],#电影主演
-                [],#电影导演
-                2000,#上映时间
-                poster_image_url,#电影海报
-                trailer_url)
-        movies.append(movie)
+        if not trailer_url is None:
+            movie = Movie(
+                    title,#电影标题
+                    score,#电影评分
+                    100,#星星数
+                    10000,#电影收藏次数
+                    category.split('、'),#电影分类
+                    [],#电影主演
+                    [],#电影导演
+                    2000,#上映时间
+                    poster_image_url,#电影海报
+                    trailer_url)
+            movies.append(movie)
         print '>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
     return movies
         
