@@ -1,0 +1,14 @@
+<div class="video mt">
+    <div id="youkuplayer" style="width:824px;height:506px"></div>
+    <script type="text/javascript" src="//player.youku.com/jsapi"></script>
+    <script type="text/javascript">
+        player = new YKU.Player('youkuplayer',{
+            styleid: '0',
+            client_id: '9afc9fe99a7b9c36',
+            vid: 'XMjgxMjc0NjYyNA==',
+            newPlayer: true,
+            show_related: false,
+            autoplay: true
+        });
+    </script>
+</div>
