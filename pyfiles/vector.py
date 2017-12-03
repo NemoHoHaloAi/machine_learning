@@ -9,7 +9,7 @@ Vector类实现
 '''
 
 # 设置Decimal小数的精度范围
-getcontext().prec = 3
+getcontext().prec = 30
 
 def tip(list1, list2):
 	list3=[]
@@ -21,7 +21,7 @@ def tip(list1, list2):
 
 class Vector:
 	def __init__(self, coordinates):
-		self.coordinates = tuple([Decimal(me) for me in coordinates])
+		self.coordinates = tuple([Decimal(str(me)) for me in coordinates])
 
 	# 判断两个Vector是否相等
 	def __eq__(self, other):
@@ -37,7 +37,7 @@ class Vector:
 
 	# 重载乘法运算符为dot products
 	def __mul__(self, other):
-		return Decimal(sum([me * him for me, him in tip(self.coordinates, other.coordinates)]))
+		return Decimal(str(sum([me * him for me, him in tip(self.coordinates, other.coordinates)])))
 	
 	# 返回向量与标量相乘的结果
 	def mul(self, times):
@@ -45,7 +45,7 @@ class Vector:
 
 	# 返回向量大小
 	def size(self):
-		return Decimal(math.sqrt(sum([me**Decimal(2) for me in self.coordinates])))
+		return Decimal(str(math.sqrt(sum([me**Decimal(2) for me in self.coordinates]))))
 
 	# 返回向量的方向向量
 	def direction(self):
@@ -59,13 +59,13 @@ class Vector:
 		try:
 			# 此处如果为1.0会报数字域错误，因此如果判断到>=1.0统一返回1
 			# 程序中全部使用Decimal来替换浮点数和整数来避免精度问题
-			return Decimal(math.acos((self * other) / (self.size() * other.size())))
+			return Decimal(str(math.acos((self * other) / (self.size() * other.size()))))
 		except ZeroDivisionError:
 			raise Exception('Can not calc angle with zero vector')
 
 	# 返回两个向量的夹角角度
 	def angle_deg(self, other):
-		return Decimal(self.angle_rad(other) * (Decimal(180) / Decimal(math.pi)))
+		return Decimal(str(self.angle_rad(other) * (Decimal(180) / Decimal(str(math.pi)))))
 
 	# 返回两个向量是否平行
 	def parallel(self, other):
