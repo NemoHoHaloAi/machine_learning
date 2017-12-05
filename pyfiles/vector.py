@@ -1,83 +1,275 @@
 #-*- coding: utf-8 -*-
 
+"""
+vector.py -- Vector自我实现类
+"""
+
 import math
 from decimal import Decimal,getcontext
 
-'''
-Vector类实现
-判断other是否为null
-'''
-
-# 设置Decimal小数的精度范围
-getcontext().prec = 3
+getcontext().prec = 3  # 设置Decimal小数的精度范围
 
 def tip(list1, list2):
-	list3=[]
-	for i in range(max(len(list1),len(list2))):
-		l1 = Decimal(0) if i >= len(list1) else list1[i]
-		l2 = Decimal(0) if i >= len(list2) else list2[i]
-		list3.append([l1,l2])
-	return list3
+    """
+    同时遍历两个列表，每次迭代返回两个列表同一位置的元素，短的列表将用0填充
 
-class Vector:
-	def __init__(self, coordinates):
-		self.coordinates = tuple([Decimal(me) for me in coordinates])
+    Args:
+        list1 -- 遍历列表1
+        list2 -- 遍历列表2
 
-	# 判断两个Vector是否相等
-	def __eq__(self, other):
-        	return (not other is None) and (self.coordinates == other.coordinates)
+    Returns:
+        result -- 返回一个二维列表，第一维长度与较长的被遍历列表一致，每个一维元素为一个大小为2的列表
+    """
+    return [[(Decimal(0) if i >= len(list1) else list1[i]), (Decimal(0) if i >= len(list2) else list2[i])] for i in range(max(len(list1),len(list2)))]
 
-	# 重载加法运算符
-	def __add__(self, other):
-    		return None if other is None else Vector([me + him for me, him in tip(self.coordinates, other.coordinates)])
+def ZeroVector(func):
+    """
+    零向量装饰器，处理当other为零向量时直接返回True，也就不需要对零向量特殊处理
+    """
+    def wrapper(*args, **kwargs):
+        """
+        Returns:
+            result -- 包含一个零向量时返回True，否则返回func
+        """
+        # TODO(Ho Loong): 暂时使用这种方法判断是否other或者self为空，后续看有没有更优雅的方法
+        self = kwargs.get('self') if kwargs.get('self') else args[0]
+        other = kwargs.get('other') if kwargs.get('other') else args[1]
+        if (self and sum(self.coordinates) == 0) or (other and sum(other.coordinates) == 0):
+            return True
+        return func(*args, **kwargs)
+    return wrapper
 
-	# 重载减法运算符
-	def __sub__(self, other):
-    		return None if other is None else Vector([me - him for me, him in tip(self.coordinates, other.coordinates)])
+def ZeroDivision(func):
+    """
+    除0异常装饰器，处理function中可能发生的除0异常
+    """
+    def wrapper(*args, **kwargs):
+        """
+        Returns:
+            result -- func的执行结果
+            
+        Raises:
+            Exception -- 当计算中出现除0时抛出该异常
+        """
+        try:
+            return func(*args, **kwargs)
+        except ZeroDivisionError:
+            raise Exception('Vector Exception:can not calc with zero vector.')
+    return wrapper
+    
+def NoneVector(func):
+    """
+    None装饰器，处理当other为None时直接抛出异常
+    """
+    def wrapper(*args, **kwargs):
+        """
+        Returns:
+            result -- func
+            
+        Raises:
+            ValueError -- 当参数other不存在或者为None时，抛出该异常
+        """
+        if not kwargs.get('other') and not args[1]:
+            raise Exception('Vector Exception:Parameter is NoneType.')
+        return func(*args, **kwargs)
+    return wrapper
 
-	# 重载乘法运算符为dot products
-	def __mul__(self, other):
-		return Decimal(sum([me * him for me, him in tip(self.coordinates, other.coordinates)]))
-	
-	# 返回向量与标量相乘的结果
-	def mul(self, times):
-		return Vector([me * times for me in self.coordinates])
+class Vector(object):
+    """
+    Vector实现类，实现了向量的基本操作，重载了向量的加+，减-，点乘*运算符，
+    实现了与标量相乘，获取向量大小，求向量之间夹角等等功能
 
-	# 返回向量大小
-	def size(self):
-		return Decimal(math.sqrt(sum([me**Decimal(2) for me in self.coordinates])))
+    Attributes:
+        coordinates -- 用于描述向量的一维元组
+    """
+    def __init__(self, coordinates):
+        """
+        初始化函数，主要是做了Decimal处理
 
-	# 返回向量的方向向量
-	def direction(self):
-		try:
-			return self.mul(Decimal(1) / self.size())
-		except ZeroDivisionError:
-			raise Exception('Can not calc direction with zero vector')
-	
-	# 返回两个向量的夹角弧度
-	def angle_rad(self, other):
-		try:
-			# 此处如果为1.0会报数字域错误，因此如果判断到>=1.0统一返回1
-			# 程序中全部使用Decimal来替换浮点数和整数来避免精度问题
-			return Decimal(math.acos((self * other) / (self.size() * other.size())))
-		except ZeroDivisionError:
-			raise Exception('Can not calc angle with zero vector')
+        Args:
+            coordinates -- 向量值列表
+        """
+    	self.coordinates = tuple([Decimal(me) for me in coordinates])
 
-	# 返回两个向量的夹角角度
-	def angle_deg(self, other):
-		return Decimal(self.angle_rad(other) * (Decimal(180) / Decimal(math.pi)))
+    def __eq__(self, other):
+        """
+        重载==运算符，当Vector中的coordinates相等时表示两个向量相等
 
-	# 返回两个向量是否平行
-	def parallel(self, other):
-		return (self.angle_rad(other) == Decimal(1)) or (self.angle_rad(other) == Decimal(-1))
+        Args:
+            other -- ==右侧的参数
 
-	# 返回两个向量是否正交
-	def orthogonal(self, other):
-		return self.angle_rad(other) == Decimal(0)
+        Returns:
+            result -- 两个向量是否相等的bool值
+        """
+    	return other and (self.coordinates == other.coordinates)
 
-	# 返回向量的字符串表达式
-	def __str__(self):
-    		return 'Vector:' + str(self.coordinates)
+    @NoneVector
+    def __add__(self, other):
+        """
+        重载+运算符，向量相加即对应元组的每个值相加得到一个新的元组
+
+        Args:
+            other -- +右侧的参数
+
+        Returns:
+            result -- 相加后的列表创建的新的Vector对象
+
+        Decorates:
+            NoneVector
+        """
+        return Vector([me + him for me, him in tip(self.coordinates, other.coordinates)])
+
+    @NoneVector
+    def __sub__(self, other):
+        """
+        重载-运算符，向量相减即对应元组的每个值相减得到一个新的元组
+
+        Args:
+            other -- -右侧的参数
+
+        Returns:
+            result -- 相减后的列表创建的新的Vector对象
+
+        Decorates:
+            NoneVector
+        """
+        return Vector([me - him for me, him in tip(self.coordinates, other.coordinates)])
+
+    @NoneVector
+    def __mul__(self, other):
+        """
+        重载*运算符，向量点乘即对应元组的每个值相乘得到一个新的列表，然后求列表项的和
+
+        Args:
+            other -- *右侧的参数
+
+        Returns:
+            result -- 点乘后求得的和
+
+        Decorates:
+            NoneVector
+        """
+    	return Decimal(sum([me * him for me, him in tip(self.coordinates, other.coordinates)]))
+    
+    # TODO(Ho Loong): 暂时使用mul，后续看有没有更好的名字用以描述一个向量乘以标量的功能
+    def mul(self, times):
+        """
+        实现向量与标量相乘，即向量的每一项都乘以标量
+
+        Args:
+            times -- 要乘的标量
+
+        Returns:
+            result -- 每一项乘以标量后组成的新的列表创建的新Vector对象
+        """
+    	return Vector([me * times for me in self.coordinates])
+
+    def size(self):
+        """
+        计算并返回向量的大小，也就是向量的模
+
+        Returns:
+            result -- 每一项的平方和再开方
+        """
+    	return Decimal(Decimal.sqrt(sum([me**Decimal(2) for me in self.coordinates])))
+
+    @ZeroDivision
+    def direction(self):
+        """
+        计算并返回向量的方向
+
+        Returns:
+            result -- 标准化
+
+        Decorates:
+            ZeroDivision
+        """
+    	return self.mul(Decimal(1) / self.size())
+    
+    @ZeroDivision
+    @NoneVector
+    def angle_rad(self, other):
+        """
+        计算两个向量之间的夹角，以弧度单位返回结果
+
+        Args:
+            other -- 与本向量计算夹角的另一个向量
+
+        Returns:
+            result -- 向量夹角弧度值
+
+        Decorates:
+            ZeroDivision
+            NoneVector
+        """
+        return Decimal(str(math.acos((self * other) / (self.size() * other.size()))))
+
+    @NoneVector
+    def angle_deg(self, other):
+        """
+        计算两个向量之间的夹角，以角度单位返回结果
+
+        Args:
+            other -- 与本向量计算夹角的另一个向量
+
+        Returns:
+            result -- 向量夹角角度值
+
+        Decorates:
+            NoneVector
+        """
+    	return Decimal(self.angle_rad(other) * (Decimal(180) / Decimal(str(math.pi))))
+
+    @ZeroVector
+    @NoneVector
+    def parallel(self, other):
+        """
+        计算并返回两个向量是否平行，平行判断方式为如果其中之一为零向量直接返回True，
+        否则判断是否每个对应位置的值的倍数都是一致的，也就是任何一个向量都可以通过
+        乘以某一个标量来转成另一个向量
+
+        Args:
+            other -- 判断是否平行的另一个变量
+
+        Returns:
+            result -- 是否平行的bool值
+
+        Decorates:
+            ZeroVector
+            NoneVector
+        """
+        if not self.coordinates or not other or not other.coordinates:
+            return False
+        pre = self.coordinates[0] / other.coordinates[0]
+        for me, him in tip(self.coordinates, other.coordinates):
+            if me / him != pre:
+                return False
+        return True
+
+    @ZeroVector
+    @NoneVector
+    def orthogonal(self, other):
+        """
+        计算并返回两个向量是否正交，平行判断方式为如果其中之一为零向量直接返回True，
+        否则判断两者的夹角弧度制是否为0
+
+        Args:
+            other -- 判断是否正交的另一个变量
+
+        Returns:
+            result -- 是否正交的bool值
+
+        Decorates:
+            ZeroVector
+            NoneVector
+        """
+    	return self.angle_rad(other) == Decimal(0)
+
+    def __str__(self):
+        """
+        返回向量的字符串表达式
+        """
+	return 'Vector:' + str(self.coordinates)
 
 
 v1 = Vector([1,2])
@@ -105,7 +297,6 @@ print 'No2:' + str(Vector([8.813,-1.331,-6.247]).size())
 print 'No3:' + str(Vector([5.581,-2.136]).direction())
 print 'No4:' + str(Vector([1.996,3.108,-4.554]).direction())
 print 'No5:' + str(Vector([0,0]).size())
-# print 'No16:' + str(Vector([0,0]).direction())
 print '--------------No2--------------'
 print 'No1:' + str(Vector([7.887,4.138]) * Vector([-8.802,6.776]))
 print 'No2:' + str(Vector([-5.955,-4.904,-1.874]) * Vector([-4.496,-8.755,7.103]))
@@ -121,5 +312,3 @@ print 'No3:' + str(Vector([-2.328,-7.284,-1.214]).parallel(Vector([-1.821,1.072,
 print 'No3:' + str(Vector([-2.328,-7.284,-1.214]).orthogonal(Vector([-1.821,1.072,-2.94])))
 print 'No4:' + str(Vector([2.118,4.827]).parallel(Vector([0,0])))
 print 'No4:' + str(Vector([2.118,4.827]).orthogonal(Vector([0,0])))
-print 'Notest:' + str(Vector([1,1]).parallel(Vector([2,2])))
-print 'Notest:' + str(Vector([1,1]).orthogonal(Vector([2,2])))
