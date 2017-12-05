@@ -272,43 +272,47 @@ class Vector(object):
 	return 'Vector:' + str(self.coordinates)
 
 
-v1 = Vector([1,2])
-v2 = Vector([2,3])
-print 'v1=' + str(v1)
-print 'v2=' + str(v2)
-v3 = v1 + v2
-print 'v1+v2=' + str(v3)
-v4 = v1 - v2
-print 'v1-v2=' + str(v4)
-v5 = v2 - v1
-print 'v2-v1=' + str(v5)
-v1 += v2
-print 'v1+=v2=' + str(v1)
-v6 = v1.mul(2)
-print 'v1*2=' + str(v6)
-print 'v1-v2是否等于v2-v1=' + str((v1-v2)==(v2-v1))
-v1 = Vector([3,4])
-print v1
-print 'v1 size=' + str(v1.size())
-print 'v1 direction=' + str(v1.direction())
-print '--------------No1--------------'
-print 'No1:' + str(Vector([-0.221,7.437]).size())
-print 'No2:' + str(Vector([8.813,-1.331,-6.247]).size())
-print 'No3:' + str(Vector([5.581,-2.136]).direction())
-print 'No4:' + str(Vector([1.996,3.108,-4.554]).direction())
-print 'No5:' + str(Vector([0,0]).size())
-print '--------------No2--------------'
-print 'No1:' + str(Vector([7.887,4.138]) * Vector([-8.802,6.776]))
-print 'No2:' + str(Vector([-5.955,-4.904,-1.874]) * Vector([-4.496,-8.755,7.103]))
-print 'No3:' + str(Vector([3.183,-7.627]).angle_rad(Vector([-2.668,5.319])))
-print 'No4:' + str(Vector([7.35,0.221,5.188]).angle_deg(Vector([2.751,8.259,3.985])))
-print 'Notest:' + str(Vector([1,1,1]).angle_deg(Vector([2,2,2])))
-print '--------------No3--------------'
-print 'No1:' + str(Vector([-7.579,-7.88]).parallel(Vector([22.737,23.64])))
-print 'No1:' + str(Vector([-7.579,-7.88]).orthogonal(Vector([22.737,23.64])))
-print 'No2:' + str(Vector([-2.029,9.97,4.172]).parallel(Vector([-9.231,-6.639,-7.245])))
-print 'No2:' + str(Vector([-2.029,9.97,4.172]).orthogonal(Vector([-9.231,-6.639,-7.245])))
-print 'No3:' + str(Vector([-2.328,-7.284,-1.214]).parallel(Vector([-1.821,1.072,-2.94])))
-print 'No3:' + str(Vector([-2.328,-7.284,-1.214]).orthogonal(Vector([-1.821,1.072,-2.94])))
-print 'No4:' + str(Vector([2.118,4.827]).parallel(Vector([0,0])))
-print 'No4:' + str(Vector([2.118,4.827]).orthogonal(Vector([0,0])))
+def main():
+    v1 = Vector([1,2])
+    v2 = Vector([2,3])
+    print 'v1=' + str(v1)
+    print 'v2=' + str(v2)
+    v3 = v1 + v2
+    print 'v1+v2=' + str(v3)
+    v4 = v1 - v2
+    print 'v1-v2=' + str(v4)
+    v5 = v2 - v1
+    print 'v2-v1=' + str(v5)
+    v1 += v2
+    print 'v1+=v2=' + str(v1)
+    v6 = v1.mul(2)
+    print 'v1*2=' + str(v6)
+    print 'v1-v2是否等于v2-v1=' + str((v1-v2)==(v2-v1))
+    v1 = Vector([3,4])
+    print v1
+    print 'v1 size=' + str(v1.size())
+    print 'v1 direction=' + str(v1.direction())
+    print '--------------No1--------------'
+    print 'No1:' + str(Vector([-0.221,7.437]).size())
+    print 'No2:' + str(Vector([8.813,-1.331,-6.247]).size())
+    print 'No3:' + str(Vector([5.581,-2.136]).direction())
+    print 'No4:' + str(Vector([1.996,3.108,-4.554]).direction())
+    print 'No5:' + str(Vector([0,0]).size())
+    print '--------------No2--------------'
+    print 'No1:' + str(Vector([7.887,4.138]) * Vector([-8.802,6.776]))
+    print 'No2:' + str(Vector([-5.955,-4.904,-1.874]) * Vector([-4.496,-8.755,7.103]))
+    print 'No3:' + str(Vector([3.183,-7.627]).angle_rad(Vector([-2.668,5.319])))
+    print 'No4:' + str(Vector([7.35,0.221,5.188]).angle_deg(Vector([2.751,8.259,3.985])))
+    print 'Notest:' + str(Vector([1,1,1]).angle_deg(Vector([2,2,2])))
+    print '--------------No3--------------'
+    print 'No1:' + str(Vector([-7.579,-7.88]).parallel(Vector([22.737,23.64])))
+    print 'No1:' + str(Vector([-7.579,-7.88]).orthogonal(Vector([22.737,23.64])))
+    print 'No2:' + str(Vector([-2.029,9.97,4.172]).parallel(Vector([-9.231,-6.639,-7.245])))
+    print 'No2:' + str(Vector([-2.029,9.97,4.172]).orthogonal(Vector([-9.231,-6.639,-7.245])))
+    print 'No3:' + str(Vector([-2.328,-7.284,-1.214]).parallel(Vector([-1.821,1.072,-2.94])))
+    print 'No3:' + str(Vector([-2.328,-7.284,-1.214]).orthogonal(Vector([-1.821,1.072,-2.94])))
+    print 'No4:' + str(Vector([2.118,4.827]).parallel(Vector([0,0])))
+    print 'No4:' + str(Vector([2.118,4.827]).orthogonal(Vector([0,0])))
+
+if __name__ == '__main__':
+    main()
