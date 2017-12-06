@@ -7,7 +7,8 @@ vector.py -- Vector自我实现类
 import math
 from decimal import Decimal,getcontext
 
-getcontext().prec = 3  # 设置Decimal小数的精度范围
+def enviroment_init():
+    getcontext().prec = 3  # 设置Decimal小数的精度范围
 
 # 使用build-in的zip即可
 # def tip(list1, list2):
@@ -274,6 +275,8 @@ class Vector(object):
 
 
 def main():
+    enviroment_init()
+    
     v1 = Vector([1,2])
     v2 = Vector([2,3])
     print 'v1=' + str(v1)
