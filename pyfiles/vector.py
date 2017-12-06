@@ -9,18 +9,19 @@ from decimal import Decimal,getcontext
 
 getcontext().prec = 3  # 设置Decimal小数的精度范围
 
-def tip(list1, list2):
-    """
-    同时遍历两个列表，每次迭代返回两个列表同一位置的元素，短的列表将用0填充
-
-    Args:
-        list1 -- 遍历列表1
-        list2 -- 遍历列表2
-
-    Returns:
-        result -- 返回一个二维列表，第一维长度与较长的被遍历列表一致，每个一维元素为一个大小为2的列表
-    """
-    return [[(Decimal(0) if i >= len(list1) else list1[i]), (Decimal(0) if i >= len(list2) else list2[i])] for i in range(max(len(list1),len(list2)))]
+# 使用build-in的zip即可
+# def tip(list1, list2):
+#     """
+#     同时遍历两个列表，每次迭代返回两个列表同一位置的元素，短的列表将用0填充
+# 
+#     Args:
+#         list1 -- 遍历列表1
+#         list2 -- 遍历列表2
+# 
+#     Returns:
+#         result -- 返回一个二维列表，第一维长度与较长的被遍历列表一致，每个一维元素为一个大小为2的列表
+#     """
+#     return [[(Decimal(0) if i >= len(list1) else list1[i]), (Decimal(0) if i >= len(list2) else list2[i])] for i in range(max(len(list1),len(list2)))]
 
 def ZeroVector(func):
     """
@@ -117,7 +118,7 @@ class Vector(object):
         Decorates:
             NoneVector
         """
-        return Vector([me + him for me, him in tip(self.coordinates, other.coordinates)])
+        return Vector([me + him for me, him in zip(self.coordinates, other.coordinates)])
 
     @NoneVector
     def __sub__(self, other):
@@ -133,7 +134,7 @@ class Vector(object):
         Decorates:
             NoneVector
         """
-        return Vector([me - him for me, him in tip(self.coordinates, other.coordinates)])
+        return Vector([me - him for me, him in zip(self.coordinates, other.coordinates)])
 
     @NoneVector
     def __mul__(self, other):
@@ -149,7 +150,7 @@ class Vector(object):
         Decorates:
             NoneVector
         """
-    	return Decimal(sum([me * him for me, him in tip(self.coordinates, other.coordinates)]))
+    	return Decimal(sum([me * him for me, him in zip(self.coordinates, other.coordinates)]))
     
     # TODO(Ho Loong): 暂时使用mul，后续看有没有更好的名字用以描述一个向量乘以标量的功能
     def mul(self, times):
@@ -241,7 +242,7 @@ class Vector(object):
         if not self.coordinates or not other or not other.coordinates:
             return False
         pre = self.coordinates[0] / other.coordinates[0]
-        for me, him in tip(self.coordinates, other.coordinates):
+        for me, him in zip(self.coordinates, other.coordinates):
             if me / him != pre:
                 return False
         return True
