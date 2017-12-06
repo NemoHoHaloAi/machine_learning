@@ -8,6 +8,9 @@ import math
 from decimal import Decimal,getcontext
 
 def enviroment_init():
+    """
+    当前程序运行环境初始化
+    """
     getcontext().prec = 3  # 设置Decimal小数的精度范围
 
 # 使用build-in的zip即可
@@ -275,6 +278,9 @@ class Vector(object):
 
 
 def main():
+    """
+    程序入口
+    """
     enviroment_init()
     
     v1 = Vector([1,2])
