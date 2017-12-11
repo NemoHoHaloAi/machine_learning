@@ -11,7 +11,7 @@ def enviroment_init():
     """
     当前程序运行环境初始化
     """
-    getcontext().prec = 3  # 设置Decimal小数的精度范围
+    getcontext().prec = 30  # 设置Decimal小数的精度范围
 
 # 使用build-in的zip即可
 # def tip(list1, list2):
