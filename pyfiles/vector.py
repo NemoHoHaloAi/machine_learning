@@ -7,6 +7,8 @@ vector.py -- Vector自我实现类
 import math
 from decimal import Decimal,getcontext
 
+ZERO = 1e-10
+
 def enviroment_init():
     """
     当前程序运行环境初始化
@@ -39,7 +41,7 @@ def ZeroVector(func):
         # TODO(Ho Loong): 暂时使用这种方法判断是否other或者self为空，后续看有没有更优雅的方法
         self = kwargs.get('self') if kwargs.get('self') else args[0]
         other = kwargs.get('other') if kwargs.get('other') else args[1]
-        if (self and sum(self.coordinates) == 0) or (other and sum(other.coordinates) == 0):
+        if (self and abs(sum(self.coordinates)) <= ZERO) or (other and abs(sum(other.coordinates)) <= ZERO):
             return True
         return func(*args, **kwargs)
     return wrapper
@@ -243,13 +245,7 @@ class Vector(object):
             ZeroVector
             NoneVector
         """
-        if not self.coordinates or not other or not other.coordinates:
-            return False
-        pre = self.coordinates[0] / other.coordinates[0]
-        for me, him in zip(self.coordinates, other.coordinates):
-            if me / him != pre:
-                return False
-        return True
+        return (self.coordinates and other and other.coordinates and (abs(self.angle_deg(other) - Decimal(0)) <= ZERO or abs(self.angle_deg(other) - Decimal(180)) <= ZERO))
 
     @ZeroVector
     @NoneVector
@@ -268,7 +264,7 @@ class Vector(object):
             ZeroVector
             NoneVector
         """
-    	return self.angle_rad(other) == Decimal(0)
+    	return abs(self * other - Decimal(0)) <= ZERO
 
     def __str__(self):
         """
