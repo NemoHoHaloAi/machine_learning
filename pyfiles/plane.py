@@ -26,7 +26,7 @@ def enviroment_init():
 class Plane(object):
     """
     Plane类用于描述一个平面，定义了平面相关的各种计算，例如平行判断，同一平面判断
-    求两平面交点等等
+    求两平面相交直线等等
 
     Attributes:
         DIMENSION -- 维度，此处仅考虑2维情况
@@ -34,7 +34,7 @@ class Plane(object):
         contant_term -- 平面的常量，如果为None，则使用0代替
     """
 
-    DIMENSION = 2 
+    DIMENSION = 3
 
     def __init__(self, normal_vector=None, constant_term=None):
         """
@@ -54,6 +54,7 @@ class Plane(object):
         self.constant_term = constant_term if constant_term else Decimal('0')
         self.a = normal_vector.coordinates[0]
         self.b = normal_vector.coordinates[1]
+        self.c = normal_vector.coordinates[2]
         self.k = constant_term
         self.__set_base_point()
 
@@ -65,10 +66,12 @@ class Plane(object):
             other -- 对比的平面
         """
         x1 = Decimal('0') if not LaDecimal(self.a).is_near_zero() else self.k / self.a
-        y1 = self.k / self.b if not LaDecimal(self.a).is_near_zero() else Decimal('0')
-        x2 = other.k / other.a if not LaDecimal(other.b).is_near_zero() else Decimal('0')
-        y2 = Decimal('0') if not LaDecimal(other.b).is_near_zero() else other.k / other.b
-        v = Vector([str(x1-x2),str(y1-y2)])
+        y1 = Decimal('0') # if not LaDecimal(self.a).is_near_zero() else self.k / self.b
+        z1 = self.k / self.c if not LaDecimal(self.a).is_near_zero() else Decimal('0')
+        x2 = other.k / other.a if not LaDecimal(other.c).is_near_zero() else Decimal('0')
+        y2 = Decimal('0') # if not LaDecimal(other.c).is_near_zero() else other.k / other.c
+        z2 = Decimal('0') if not LaDecimal(other.c).is_near_zero() else other.k / other.c
+        v = Vector([str(x1-x2),str(y1-y2),str(z1-z2)])
         return self.normal_vector.orthogonal(v) and other.normal_vector.orthogonal(v)
 
     def __ne__(self, other):
@@ -141,18 +144,29 @@ def main():
     enviroment_init()
     
     print 'testing:'
-    l1 = Plane(Vector(['1','2']), Decimal('0'))
-    l2 = Plane(Vector(['1','2']), Decimal('0'))
-    print 'l1,l2 has intersection:' + str(l1.intersection(l2))
-    print 'l1,l2 is same Plane:' + str(l1==l2)
+    p1 = Plane(Vector(['1','2','3']), Decimal('0'))
+    p2 = Plane(Vector(['1','2','3']), Decimal('0'))
+    print 'p1,p2 is parallel plane:' + str(p1.parallel(p2))
+    print 'p1,p2 is same Plane:' + str(p1==p2)
     print '-------------------------------------------------------------------'
 
-    l1 = Plane(Vector(['4.046','2.836']), Decimal('1.21'))
-    l2 = Plane(Vector(['10.115','7.09']), Decimal('3.025'))
-    print 'l1,l2 has intersection:' + str(l1.intersection(l2))
-    print 'l1,l2 is same Plane:' + str(l1==l2)
+    p1 = Plane(Vector(['-0.412','3.806','0.728']), Decimal('-3.46'))
+    p2 = Plane(Vector(['1.03','-9.515','-1.82']), Decimal('8.65'))
+    print 'p1,p2 is parallel plane:' + str(p1.parallel(p2))
+    print 'p1,p2 is same plane:' + str(p1==p2)
     print '-------------------------------------------------------------------'
 
+    p1 = Plane(Vector(['2.611','5.528','0.283']), Decimal('4.6'))
+    p2 = Plane(Vector(['7.715','8.306','5.342']), Decimal('3.76'))
+    print 'p1,p2 is parallel plane:' + str(p1.parallel(p2))
+    print 'p1,p2 is same plane:' + str(p1==p2)
+    print '-------------------------------------------------------------------'
+
+    p1 = Plane(Vector(['-7.926','8.625','-7.212']), Decimal('-7.952'))
+    p2 = Plane(Vector(['-2.642','2.875','-2.404']), Decimal('-2.443'))
+    print 'p1,p2 is parallel plane:' + str(p1.parallel(p2))
+    print 'p1,p2 is same plane:' + str(p1==p2)
+    print '-------------------------------------------------------------------'
 
 if __name__ == '__main__':
     main()

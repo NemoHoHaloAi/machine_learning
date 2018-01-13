@@ -141,8 +141,8 @@ def main():
     enviroment_init()
     
     print 'testing:'
-    l1 = Line(Vector(['1','2']), Decimal('0'))
-    l2 = Line(Vector(['1','2']), Decimal('0'))
+    l1 = Line(Vector(['1.0','2.0']), Decimal('0.0'))
+    l2 = Line(Vector(['1.0','2.0']), Decimal('0.0'))
     print 'l1,l2 has intersection:' + str(l1.intersection(l2))
     print 'l1,l2 is same line:' + str(l1==l2)
     print '-------------------------------------------------------------------'
