@@ -1,8 +1,14 @@
+#!/usr/bin/env python
 #-*- coding: utf-8 -*-
 
-"""
-vector.py -- Vector自我实现类
-"""
+'''
+project_name	linear algebra
+function	Vector实现类
+author		Ho Loong
+date		2017-12-23
+company		Aispeech,Inc.
+ps              Please be pythonic.
+'''
 
 import math
 from decimal import Decimal,getcontext
