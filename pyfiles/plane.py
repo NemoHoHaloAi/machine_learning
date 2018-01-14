@@ -17,6 +17,24 @@ from ladecimal import LaDecimal
 
 from vector import Vector
 
+def ZeroCalc(func):
+    """
+    除0异常装饰器，处理function中可能发生的除0异常
+    """
+    def wrapper(*args, **kwargs):
+        """
+        Returns:
+            result -- func的执行结果
+            
+        Raises:
+            Exception -- 当计算中出现除0时抛出该异常
+        """
+        try:
+            return func(*args, **kwargs)
+        except ZeroDivisionError:
+            return None
+    return wrapper
+
 def enviroment_init():
     """
     程序运行环境初始化
@@ -52,10 +70,11 @@ class Plane(object):
         """
         self.normal_vector = normal_vector if normal_vector else Vector([0]*Plane.DIMENSION)
         self.constant_term = constant_term if constant_term else Decimal('0')
-        self.a = normal_vector.coordinates[0]
-        self.b = normal_vector.coordinates[1]
-        self.c = normal_vector.coordinates[2]
-        self.k = constant_term
+        self.a = self.normal_vector.coordinates[0]
+        self.b = self.normal_vector.coordinates[1]
+        self.c = self.normal_vector.coordinates[2]
+        self.k = Decimal(self.constant_term)
+        self.dimension = len(self.normal_vector)
         self.__set_base_point()
 
     def __eq__(self, other):
@@ -65,13 +84,16 @@ class Plane(object):
         Args:
             other -- 对比的平面
         """
-        x1 = Decimal('0') if not LaDecimal(self.a).is_near_zero() else self.k / self.a
-        y1 = Decimal('0') # if not LaDecimal(self.a).is_near_zero() else self.k / self.b
-        z1 = self.k / self.c if not LaDecimal(self.a).is_near_zero() else Decimal('0')
-        x2 = other.k / other.a if not LaDecimal(other.c).is_near_zero() else Decimal('0')
-        y2 = Decimal('0') # if not LaDecimal(other.c).is_near_zero() else other.k / other.c
-        z2 = Decimal('0') if not LaDecimal(other.c).is_near_zero() else other.k / other.c
+        x1 = Decimal('0') if not LaDecimal(self.c).is_near_zero() else (Decimal('0') if not LaDecimal(self.b).is_near_zero() else (self.k / self.a if not LaDecimal(self.a).is_near_zero() else Decimal('0')))
+        y1 = Decimal('0') if not LaDecimal(self.c).is_near_zero() else (self.k / self.b if not LaDecimal(self.b).is_near_zero() else Decimal('0'))
+        z1 = self.k / self.c if not LaDecimal(self.c).is_near_zero() else Decimal('0')
+
+        x2 = other.k / other.a if not LaDecimal(other.a).is_near_zero() else Decimal('0')
+        y2 = Decimal('0') if not LaDecimal(other.a).is_near_zero() else (other.k / other.b if not LaDecimal(other.b).is_near_zero() else Decimal('0'))
+        z2 = Decimal('0') if not LaDecimal(other.a).is_near_zero() else (Decimal('0') if not LaDecimal(other.b).is_near_zero() else (other.k / other.c if not LaDecimal(other.c).is_near_zero() else Decimal('0')))
+
         v = Vector([str(x1-x2),str(y1-y2),str(z1-z2)])
+
         return self.normal_vector.orthogonal(v) and other.normal_vector.orthogonal(v)
 
     def __ne__(self, other):
@@ -87,7 +109,7 @@ class Plane(object):
         """
         重载Plane的str()方法，输出平面对应的一般式
         """
-        return 'aX+bY+cZ=k'
+        return '('+str(self.a)+')X+('+str(self.b)+')Y+('+str(self.c)+')Z'+'='+str(self.k)
 
     def __set_base_point(self):
         """
@@ -120,6 +142,7 @@ class Plane(object):
         """
         return 0 if (self.parallel(other) and self != other) else (1 if not self.parallel(other) else -1)
 
+    @ZeroCalc
     def intersection_point(self, other, other2):
         """
         求三个平面交点
@@ -133,33 +156,38 @@ class Plane(object):
 
         Returns:
             interseciton -- 交点(a,b,c)
+
+        Raises:
+            ZeroCalc -- 除0异常处理，返回None表示出现异常
         """
         a1,b1,c1,k1 = self.a,self.b,self.c,self.k
         a2,b2,c2,k2 = other.a,other.b,other.c,other.k
         a3,b3,c3,k3 = other2.a,other2.b,other2.c,other2.k
 
         # step 1 : 消去方程2,3中的x
-        x = -(a2/a1) if a2!=0 else Decimal('0')
-        a2,b2,c2,k2 = a2+x*a1,b2+x*b1,c2+x*c1,k2+x*k1
+        ratio = -(a2/a1) if a2!=0 else Decimal('0')
+        a2,b2,c2,k2 = a2+ratio*a1,b2+ratio*b1,c2+ratio*c1,k2+ratio*k1
 
-        x = -(a3/a1) if a3!=0 else Decimal('0')
-        a3,b3,c3,k3 = a3+x*a1,b3+x*b1,c3+x*c1,k3+x*k1
+        ratio = -(a3/a1) if a3!=0 else Decimal('0')
+        a3,b3,c3,k3 = a3+ratio*a1,b3+ratio*b1,c3+ratio*c1,k3+ratio*k1
 
         # step 2 : 消去方程3中的y
-        x = -(b3/b2) if b3!=0 else Decimal('0')
-        a3,b3,c3,k3 = a3+x*a2,b3+x*b2,c3+x*c2,k3+x*k2
+        ratio = -(b3/b2) if b3!=0 else Decimal('0')
+        a3,b3,c3,k3 = a3+ratio*a2,b3+ratio*b2,c3+ratio*c2,k3+ratio*k2
 
         print 'function 1:('+str(a1)+')X+('+str(b1)+')Y+('+str(c1)+')Z'+'='+str(k1)
         print 'function 2:('+str(a2)+')X+('+str(b2)+')Y+('+str(c2)+')Z'+'='+str(k2)
         print 'function 3:('+str(a3)+')X+('+str(b3)+')Y+('+str(c3)+')Z'+'='+str(k3)
+        
+        x,y,z=0,0,0
+        if LaDecimal(k3).is_near_zero() and LaDecimal(c3).is_near_zero():
+            print '0==0 case'
+        else:
+            z = k3 / c3
+            y = (k2-z*c2) / b2
+            x = (k1-z*c1-y*b1) / a1
 
-        z = k3 / c3
-        y = (k2-z*c2) / (b2)
-        x = (k1-z*c1-y*b1) / (a1)
-
-        print 'x='+str(x)+',y='+str(y)+',z='+str(z)
-
-        return
+        return Vector([str(x),str(y),str(z)])
 
     @staticmethod
     def first_nonzero_index(iterable):
@@ -212,6 +240,24 @@ def main():
     p1 = Plane(Vector(['-1','1','1']), Decimal('-2'))
     p2 = Plane(Vector(['1','-4','4']), Decimal('21'))
     p3 = Plane(Vector(['7','-5','-11']), Decimal('0'))
+    print 'p1,p2 has intersection point:' + str(p1.intersection_point(p2,p3))
+    print '-------------------------------------------------------------------'
+
+    p1 = Plane(Vector(['1','-2','1']), Decimal('-1'))
+    p2 = Plane(Vector(['-1','4','-4']), Decimal('0'))
+    p3 = Plane(Vector(['1','0','-2']), Decimal('2'))
+    print 'p1,p2 has intersection point:' + str(p1.intersection_point(p2,p3))
+    print '-------------------------------------------------------------------'
+
+    p1 = Plane(Vector(['3','-4','1']), Decimal('1'))
+    p2 = Plane(Vector(['1','-1','1']), Decimal('2'))
+    p3 = Plane(Vector(['0','1','-1']), Decimal('2'))
+    print 'p1,p2 has intersection point:' + str(p1.intersection_point(p2,p3))
+    print '-------------------------------------------------------------------'
+
+    p1 = Plane(Vector(['1','2','1']), Decimal('-1'))
+    p2 = Plane(Vector(['3','6','2']), Decimal('1'))
+    p3 = Plane(Vector(['-1','-2','-1']), Decimal('1'))
     print 'p1,p2 has intersection point:' + str(p1.intersection_point(p2,p3))
     print '-------------------------------------------------------------------'
 
