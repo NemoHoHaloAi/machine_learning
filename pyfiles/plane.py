@@ -107,7 +107,7 @@ class Plane(object):
         """
         return self.normal_vector.parallel(other.normal_vector)
 
-    def intersection(self, other):
+    def intersection_line(self, other):
         """
         求两个平面相交的直线
 
@@ -116,9 +116,50 @@ class Plane(object):
 
         Returns:
             count -- 相交直线的个数，0表示没有相交，1表示有且只有一条直线，-1表示有无数条直线相交
-            interseciton -- 当count=1时，该值存在(x,y)，为-1时，同样给出一个结果
+            interseciton -- 当count=1时，该值存在(x,y,z)，为-1时，同样给出一个结果
         """
         return 0 if (self.parallel(other) and self != other) else (1 if not self.parallel(other) else -1)
+
+    def intersection_point(self, other, other2):
+        """
+        求三个平面交点
+
+        Args:
+            other -- 另一个平面
+            other2 -- 第三个平面
+
+        Notes:
+            formula -- 高斯消去法
+
+        Returns:
+            interseciton -- 交点(a,b,c)
+        """
+        a1,b1,c1,k1 = self.a,self.b,self.c,self.k
+        a2,b2,c2,k2 = other.a,other.b,other.c,other.k
+        a3,b3,c3,k3 = other2.a,other2.b,other2.c,other2.k
+
+        # step 1 : 消去方程2,3中的x
+        x = -(a2/a1) if a2!=0 else Decimal('0')
+        a2,b2,c2,k2 = a2+x*a1,b2+x*b1,c2+x*c1,k2+x*k1
+
+        x = -(a3/a1) if a3!=0 else Decimal('0')
+        a3,b3,c3,k3 = a3+x*a1,b3+x*b1,c3+x*c1,k3+x*k1
+
+        # step 2 : 消去方程3中的y
+        x = -(b3/b2) if b3!=0 else Decimal('0')
+        a3,b3,c3,k3 = a3+x*a2,b3+x*b2,c3+x*c2,k3+x*k2
+
+        print 'function 1:('+str(a1)+')X+('+str(b1)+')Y+('+str(c1)+')Z'+'='+str(k1)
+        print 'function 2:('+str(a2)+')X+('+str(b2)+')Y+('+str(c2)+')Z'+'='+str(k2)
+        print 'function 3:('+str(a3)+')X+('+str(b3)+')Y+('+str(c3)+')Z'+'='+str(k3)
+
+        z = k3 / c3
+        y = (k2-z*c2) / (b2)
+        x = (k1-z*c1-y*b1) / (a1)
+
+        print 'x='+str(x)+',y='+str(y)+',z='+str(z)
+
+        return
 
     @staticmethod
     def first_nonzero_index(iterable):
@@ -166,6 +207,12 @@ def main():
     p2 = Plane(Vector(['-2.642','2.875','-2.404']), Decimal('-2.443'))
     print 'p1,p2 is parallel plane:' + str(p1.parallel(p2))
     print 'p1,p2 is same plane:' + str(p1==p2)
+    print '-------------------------------------------------------------------'
+
+    p1 = Plane(Vector(['-1','1','1']), Decimal('-2'))
+    p2 = Plane(Vector(['1','-4','4']), Decimal('21'))
+    p3 = Plane(Vector(['7','-5','-11']), Decimal('0'))
+    print 'p1,p2 has intersection point:' + str(p1.intersection_point(p2,p3))
     print '-------------------------------------------------------------------'
 
 if __name__ == '__main__':
