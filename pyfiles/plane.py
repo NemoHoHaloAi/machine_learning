@@ -76,7 +76,7 @@ class Plane(object):
         self.c = self.normal_vector.coordinates[2]
         self.k = Decimal(self.constant_term)
         self.params = [self.a,self.b,self.c]
-        self.first_nonzero_idx = self.first_nonzero_index()
+        self.first_nonzero_idx = self.__first_nonzero_index()
         self.dimension = len(self.normal_vector)
         self.__set_base_point()
 
@@ -206,7 +206,7 @@ class Plane(object):
 
         return Vector([str(x),str(y),str(z)])
 
-    def first_nonzero_index(self):
+    def __first_nonzero_index(self):
         """
         获取params中第一个非零元素的角标
 
