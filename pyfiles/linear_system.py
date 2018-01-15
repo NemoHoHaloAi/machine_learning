@@ -226,20 +226,29 @@ class LinearSystem(object):
             result -- 形状为梯形且首项系数为1的方程式
 
         Notes:
-            1 -- compute_triangular_form获取三角形方程式
-            2 -- 将对应位置的列的其他项全部消去
-            3 -- 将对应位置的系数调整为1
+            pre handle -- compute_triangular_form获取三角形方程式
+            algorithm -- 流程：先将最后一行的第一个非0元素系数化为1，然后将该列所有其他元素化为0，然后倒数第二行，以此类推直至第一行未知
         """
+
+        # pre handle
         system = self.compute_triangular_form()
-        print system
-        p1 = system[0]
-        if LaDecimal(p1.a-1).is_near_zero():
-            system.multiply_coefficient_and_row(1/p1.a,0)
-        p1 = system[0]
-        p2 = system[1]
-        if LaDecimal(p2.b-1).is_near_zero():
-            system.multiply_coefficient_and_row(1/p2.b,1)
-        p2 = system[1]
+        for i in range(len(system)-1,-1,-1):
+            p = system[i]
+            # 先将第一个非0元素系数化为1
+            param_idx = len(p.params)-1 if i>len(p.params)-1 else i 
+            first_nonzero_idx = p.first_nonzero_index()
+            if not first_nonzero_idx is -1:
+                param_make_1 = p.params[first_nonzero_idx]
+                if LaDecimal(param_make_1-1).is_near_zero():
+                    system.multiply_coefficient_and_row(1/param_make_1,i)
+                # 将该位置对应列其他元素全部消去
+                for j in range(len(system)):
+                    if j != i:
+                        p_make_0 = system[j]
+                        param_make_0 = p_make_0.params[first_nonzero_idx]
+                        ratio = -(param_make_0 / param_make_1)
+                        system.add_multiple_times_row_to_row(ratio,i,j)
+
         return system
 
 
@@ -254,7 +263,7 @@ def main():
     p2 = Plane(normal_vector=Vector(['1','1','-1']), constant_term='3')
     p3 = Plane(normal_vector=Vector(['1','0','-2']), constant_term='2')
 
-    print 'Test swap_rows'
+    print 'Test swap_rows ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
     s = LinearSystem([p0,p1,p2,p3])
     s.swap_rows(0,1)
     if not (s[0] == p1 and s[1] == p0 and s[2] == p2 and s[3] == p3):
@@ -268,7 +277,7 @@ def main():
     if not (s[0] == p1 and s[1] == p0 and s[2] == p2 and s[3] == p3):
         print 'test case 3 failed'
     
-    print 'Test multiply_coefficient_and_row'
+    print 'Test multiply_coefficient_and_row ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
     s.multiply_coefficient_and_row(1,0)
     if not (s[0] == p1 and s[1] == p0 and s[2] == p2 and s[3] == p3):
         print 'test case 4 failed'
@@ -287,7 +296,7 @@ def main():
             s[3] == p3):
         print 'test case 6 failed'
     
-    print 'Test add_multiple_times_row_to_row'
+    print 'Test add_multiple_times_row_to_row ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
     s.add_multiple_times_row_to_row(0,0,1)
     if not (s[0] == p1 and
             s[1] == Plane(normal_vector=Vector(['10','10','10']), constant_term='10') and
@@ -309,14 +318,11 @@ def main():
             s[3] == p3):
         print 'test case 9 failed'
 
-    print 'Test compute_triangular_form'
+    print 'Test compute_triangular_form ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
     p1 = Plane(normal_vector=Vector(['1','1','1']), constant_term='1')
     p2 = Plane(normal_vector=Vector(['0','1','1']), constant_term='2')
     s = LinearSystem([p1,p2])
     t = s.compute_triangular_form()
-    print 'test 1'
-    print s
-    print t
     if not (t[0] == p1 and
     	t[1] == p2):
         print 'test case 1 failed'
@@ -325,9 +331,6 @@ def main():
     p2 = Plane(normal_vector=Vector(['1','1','1']), constant_term='2')
     s = LinearSystem([p1,p2])
     t = s.compute_triangular_form()
-    print 'test 2'
-    print s
-    print t
     if not (t[0] == p1 and
     	t[1] == Plane(constant_term='1')):
         print 'test case 2 failed'
@@ -338,9 +341,6 @@ def main():
     p4 = Plane(normal_vector=Vector(['1','0','-2']), constant_term='2')
     s = LinearSystem([p1,p2,p3,p4])
     t = s.compute_triangular_form()
-    print 'test 3'
-    print s
-    print t
     if not (t[0] == p1 and
     	t[1] == p2 and
     	t[2] == Plane(normal_vector=Vector(['0','0','-2']), constant_term='2') and
@@ -352,22 +352,16 @@ def main():
     p3 = Plane(normal_vector=Vector(['1','2','-5']), constant_term='3')
     s = LinearSystem([p1,p2,p3])
     t = s.compute_triangular_form()
-    print 'test 4'
-    print s
-    print t
     if not (t[0] == Plane(normal_vector=Vector(['1','-1','1']), constant_term='2') and
     	t[1] == Plane(normal_vector=Vector(['0','1','1']), constant_term='1') and
     	t[2] == Plane(normal_vector=Vector(['0','0','-9']), constant_term='-2')):
         print 'test case 4 failed'
 
-    # test computer_rref
+    print 'Test computer_rref ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
     p1 = Plane(normal_vector=Vector(['1','1','1']), constant_term='1')
     p2 = Plane(normal_vector=Vector(['0','1','1']), constant_term='2')
     s = LinearSystem([p1,p2])
     r = s.compute_rref()
-    print 'test 1'
-    print s
-    print r
     if not (r[0] == Plane(normal_vector=Vector(['1','0','0']), constant_term='-1') and
             r[1] == p2):
         print 'test case 1 failed'
@@ -376,9 +370,6 @@ def main():
     p2 = Plane(normal_vector=Vector(['1','1','1']), constant_term='2')
     s = LinearSystem([p1,p2])
     r = s.compute_rref()
-    print 'test 2'
-    print s
-    print r
     if not (r[0] == p1 and
             r[1] == Plane(constant_term='1')):
         print 'test case 2 failed'
@@ -389,9 +380,6 @@ def main():
     p4 = Plane(normal_vector=Vector(['1','0','-2']), constant_term='2')
     s = LinearSystem([p1,p2,p3,p4])
     r = s.compute_rref()
-    print 'test 3'
-    print s
-    print r
     if not (r[0] == Plane(normal_vector=Vector(['1','0','0']), constant_term='0') and
             r[1] == p2 and
             r[2] == Plane(normal_vector=Vector(['0','0','-2']), constant_term='2') and
@@ -403,9 +391,6 @@ def main():
     p3 = Plane(normal_vector=Vector(['1','2','-5']), constant_term='3')
     s = LinearSystem([p1,p2,p3])
     r = s.compute_rref()
-    print 'test 4'
-    print s
-    print r
     if not (r[0] == Plane(normal_vector=Vector(['1','0','0']), constant_term=Decimal('23')/Decimal('9')) and
             r[1] == Plane(normal_vector=Vector(['0','1','0']), constant_term=Decimal('7')/Decimal('9')) and
             r[2] == Plane(normal_vector=Vector(['0','0','1']), constant_term=Decimal('2')/Decimal('9'))):

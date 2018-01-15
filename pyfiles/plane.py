@@ -53,6 +53,7 @@ class Plane(object):
     """
 
     DIMENSION = 3
+    NONZERO_PARAM_NOT_FOUND = 'No zero parameter not exist!!'
 
     def __init__(self, normal_vector=None, constant_term=None):
         """
@@ -74,6 +75,7 @@ class Plane(object):
         self.b = self.normal_vector.coordinates[1]
         self.c = self.normal_vector.coordinates[2]
         self.k = Decimal(self.constant_term)
+        self.params = [self.a,self.b,self.c]
         self.dimension = len(self.normal_vector)
         self.__set_base_point()
 
@@ -189,13 +191,9 @@ class Plane(object):
 
         return Vector([str(x),str(y),str(z)])
 
-    @staticmethod
-    def first_nonzero_index(iterable):
+    def first_nonzero_index(self):
         """
-        工具方法获取可迭代对象中第一个非零元素的角标
-
-        Args:
-            iterable -- 被迭代的对象
+        获取params中第一个非零元素的角标
 
         Returns:
             index -- 第一个非零元素的角标
@@ -203,7 +201,10 @@ class Plane(object):
         Raises:
             Exception -- 不存在符合条件的元素时抛出该异常
         """
-        return 1
+        for i in range(len(self.params)):
+            if not LaDecimal(self.params[i]).is_near_zero():
+                return i
+        return -1
 
 
 def main():
