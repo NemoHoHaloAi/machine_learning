@@ -224,8 +224,14 @@ class LinearSystem(object):
 
         Returns:
             result -- 形状为梯形且首项系数为1的方程式
+
+        Notes:
+            1 -- compute_triangular_form获取三角形方程式
+            2 -- 将对应位置的列的其他项全部消去
+            3 -- 将对应位置的系数调整为1
         """
         system = self.compute_triangular_form()
+        print system
         p1 = system[0]
         if LaDecimal(p1.a-1).is_near_zero():
             system.multiply_coefficient_and_row(1/p1.a,0)
