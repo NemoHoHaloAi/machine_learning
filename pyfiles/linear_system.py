@@ -255,16 +255,15 @@ class LinearSystem(object):
             p = system[i]
             # 先将第一个非0元素系数化为1
             param_idx = len(p.params)-1 if i>len(p.params)-1 else i 
-            first_nonzero_idx = p.first_nonzero_index()
-            if not first_nonzero_idx is -1:
-                param_make_1 = p.params[first_nonzero_idx]
+            if not p.first_nonzero_idx is -1:
+                param_make_1 = p.params[p.first_nonzero_idx]
                 if LaDecimal(param_make_1-1).is_near_zero():
                     system.multiply_coefficient_and_row(1/param_make_1,i)
                 # 将该位置对应列其他元素全部消去
                 for j in range(len(system)):
                     if j != i:
                         p_make_0 = system[j]
-                        param_make_0 = p_make_0.params[first_nonzero_idx]
+                        param_make_0 = p_make_0.params[p.first_nonzero_idx]
                         ratio = -(param_make_0 / param_make_1)
                         system.add_multiple_times_row_to_row(ratio,i,j)
 
