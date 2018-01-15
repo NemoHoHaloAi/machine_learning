@@ -76,6 +76,7 @@ class Plane(object):
         self.c = self.normal_vector.coordinates[2]
         self.k = Decimal(self.constant_term)
         self.params = [self.a,self.b,self.c]
+        self.first_nonzero_idx = self.first_nonzero_index()
         self.dimension = len(self.normal_vector)
         self.__set_base_point()
 
@@ -106,6 +107,20 @@ class Plane(object):
             other -- 对比的平面
         """
         return not self == other
+
+    def __cmp__(self, other):
+        """
+        重载比较运算符，使用Plane类对象可以被sort或者sorted操作
+
+        Args:
+            other -- 用于与自身比较的另一个Plane对象
+
+        Returns:
+            -1 -- 自己比较小
+            1 -- 自己比较大
+            0 -- 一样大小
+        """
+        return 1 if self.first_nonzero_idx is -1 else self.first_nonzero_idx - other.first_nonzero_idx # 使得在顺序排序时，直接得到正三角形方程式，没有非0项的话用于返回1，放到最后
 
     def __str__(self):
         """

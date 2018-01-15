@@ -140,7 +140,27 @@ class LinearSystem(object):
         self.planes[row_to_added_to] = Plane(Vector([self.planes[row_to_added_to].a+row_to_add_plane.a, self.planes[row_to_added_to].b+row_to_add_plane.b,
                 self.planes[row_to_added_to].c+row_to_add_plane.c]), self.planes[row_to_added_to].k+row_to_add_plane.k)
 
+
     def compute_triangular_form(self):
+        """
+        更抽象封装的方式实现该函数功能
+        """
+        system = deepcopy(self)
+
+        system.planes.sort() # step 1 : 对planes进行排序，是的符合三角形排列，从上到下，非0项元素角标依次增加
+
+        for i in range(len(system)-2,-1,-1): # step 2 : 将每一行首个不为0的元素对应列其他元素全部消掉
+            idx = system[i].first_nonzero_idx
+            if not idx is -1:
+                for j in range(i+1,len(system)):
+                    if j!=i and not LaDecimal(system[j].params[idx]).is_near_zero():
+                        system.add_multiple_times_row_to_row(-(system[j].params[idx]/system[i].params[idx]),i,j)
+
+        system.planes.sort() # step 3 : 再度排序避免由于step 2的影响
+
+        return system
+
+    def compute_triangular_form_2(self):
         """
         实现将方程组变化为三角形的函数
 
@@ -153,7 +173,6 @@ class LinearSystem(object):
             3 -- 仅将几倍的行与它下方的行相加，也就是说为了消除第二行的x时，只能用第一行的n倍相加来消除
         """
         system = deepcopy(self)
-
         #######
         # x
         p1 = system[0]
@@ -180,7 +199,7 @@ class LinearSystem(object):
             if i == len(system):
                 raise Exception(LinearSystem.NOT_CAN_SWAP_ROW)
         p2 = system[1]
-        p2 = system[1]
+
 
         # z
         for idx in range(2,len(system)):
@@ -341,6 +360,10 @@ def main():
     p4 = Plane(normal_vector=Vector(['1','0','-2']), constant_term='2')
     s = LinearSystem([p1,p2,p3,p4])
     t = s.compute_triangular_form()
+    t2 = s.compute_triangular_form_2()
+    print s
+    print t
+    print t2
     if not (t[0] == p1 and
     	t[1] == p2 and
     	t[2] == Plane(normal_vector=Vector(['0','0','-2']), constant_term='2') and
@@ -395,6 +418,16 @@ def main():
             r[1] == Plane(normal_vector=Vector(['0','1','0']), constant_term=Decimal('7')/Decimal('9')) and
             r[2] == Plane(normal_vector=Vector(['0','0','1']), constant_term=Decimal('2')/Decimal('9'))):
         print 'test case 4 failed'
+
+    """
+    print 'Debug:'
+    p1 = Plane(normal_vector=Vector(['0','0','3']), constant_term='2')
+    p2 = Plane(normal_vector=Vector(['1','1','-1']), constant_term='3')
+    p3 = Plane(normal_vector=Vector(['1','0','-2']), constant_term='2')
+    p4 = Plane(normal_vector=Vector(['1','1','1']), constant_term='1')
+    s = LinearSystem([p1,p2,p3,p4])
+    t = s.compute_triangular_form()
+    """
 
 if __name__ == '__main__':
     main()
