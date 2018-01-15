@@ -269,6 +269,73 @@ class LinearSystem(object):
 
         return system
 
+    def compute_solutions(self):
+        """
+        实现求方程组解的函数
+
+        Returns:
+            status -- 0:该方程组无解 1:该方程有唯一解 -1:该方程组有无数解
+            result -- 当方程组有唯一解时，返回该值[x,y,z....]存储该值
+        """
+
+        def has_not_solutions(system):
+            """
+            判断方程式是否无解
+
+            Args:
+                system -- 被判断的方程式组
+
+            Notes:
+                algorithm -- 判断条件是是否存在0=k，k不为0的情况
+            """
+            for plane in system:
+                params = plane.params
+                k = plane.k
+                if LaDecimal(k).is_near_zero():
+                    break
+                all_zero = True
+                for p in params:
+                    if not LaDecimal(p).is_near_zero():
+                        all_zero = False
+                        break
+                if all_zero:
+                    return True
+
+        def has_so_much_solutions(system):
+            """
+            判断方程式是否有无数的解
+
+            Args:
+                system -- 被判断的方程式组
+
+            Notes:
+                algorithm -- 判断条件是有用的方程式个数是否不小于需要求的变量的个数
+            """
+            num_pivots = sum([1 if not p.first_nonzero_idx is -1 else 0 for p in system])
+            num_dimension = system[0].dimension
+            return num_dimension > num_pivots
+
+        def calc_solution(system):
+            """
+            求解方程唯一解
+
+            Args:
+                system -- 求解的方程式组
+
+            Notes:
+                
+            """
+
+            return Vector([p.k for p in system[:system[0].dimension]])
+
+        system = self.compute_rref() # 获取方程式对应的rref式
+
+        if has_not_solutions(system):
+            return 0,None
+        if has_so_much_solutions(system):
+            return -1,None
+        return 1,calc_solution(system)
+
 
 def main():
     """
@@ -427,6 +494,31 @@ def main():
     s = LinearSystem([p1,p2,p3,p4])
     t = s.compute_triangular_form()
     """
+
+    print 'Test compute_rref 求解方程组~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+    p1 = Plane(normal_vector=Vector(['5.862','1.178','-10.366']), constant_term='-8.15')
+    p2 = Plane(normal_vector=Vector(['-2.931','-0.589','5.183']), constant_term='-4.075')
+    s = LinearSystem([p1,p2])
+    status,solution = s.compute_solutions()
+    print '是否有解：'+str(status)
+    print '唯一解：'+str(solution)
+
+    p1 = Plane(normal_vector=Vector(['8.631','5.112','-1.816']), constant_term='-5.113')
+    p2 = Plane(normal_vector=Vector(['4.315','11.132','-5.27']), constant_term='-6.775')
+    p3 = Plane(normal_vector=Vector(['-2.158','3.01','-1.727']), constant_term='-0.831')
+    s = LinearSystem([p1,p2,p3])
+    status,solution = s.compute_solutions()
+    print '是否有解：'+str(status)
+    print '唯一解：'+str(solution)
+
+    p1 = Plane(normal_vector=Vector(['5.262','2.739','-9.878']), constant_term='-3.441')
+    p2 = Plane(normal_vector=Vector(['5.111','6.358','7.638']), constant_term='-2.152')
+    p3 = Plane(normal_vector=Vector(['2.016','-9.924','-1.367']), constant_term='-9.278')
+    p4 = Plane(normal_vector=Vector(['2.167','-13.543','-18.883']), constant_term='-10.567')
+    s = LinearSystem([p1,p2,p3,p4])
+    status,solution = s.compute_solutions()
+    print '是否有解：'+str(status)
+    print '唯一解：'+str(solution)
 
 if __name__ == '__main__':
     main()
