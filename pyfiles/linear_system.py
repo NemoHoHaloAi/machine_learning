@@ -66,8 +66,7 @@ class LinearSystem(object):
         try:    
             dim = planes[0].dimension
             for p in planes:
-                # 防止各个plane的维度不一致
-                assert p.dimension == dim
+                assert p.dimension == dim # 防止各个plane的维度不一致
             self.planes = planes
             self.dimension = dim
         except AssertionError:
@@ -249,23 +248,21 @@ class LinearSystem(object):
             algorithm -- 流程：先将最后一行的第一个非0元素系数化为1，然后将该列所有其他元素化为0，然后倒数第二行，以此类推直至第一行未知
         """
 
-        # pre handle
-        system = self.compute_triangular_form()
+        system = self.compute_triangular_form() # pre handle
+
         for i in range(len(system)-1,-1,-1):
             p = system[i]
-            # 先将第一个非0元素系数化为1
             param_idx = len(p.params)-1 if i>len(p.params)-1 else i 
             if not p.first_nonzero_idx is -1:
                 param_make_1 = p.params[p.first_nonzero_idx]
-                if LaDecimal(param_make_1-1).is_near_zero():
+                if not LaDecimal(param_make_1-1).is_near_zero(): # 先将第一个非0元素系数化为1
                     system.multiply_coefficient_and_row(1/param_make_1,i)
-                # 将该位置对应列其他元素全部消去
                 for j in range(len(system)):
                     if j != i:
                         p_make_0 = system[j]
                         param_make_0 = p_make_0.params[p.first_nonzero_idx]
                         ratio = -(param_make_0 / param_make_1)
-                        system.add_multiple_times_row_to_row(ratio,i,j)
+                        system.add_multiple_times_row_to_row(ratio,i,j) # 将该位置对应列其他元素全部消去
 
         return system
 
@@ -329,6 +326,7 @@ class LinearSystem(object):
             return Vector([p.k for p in system[:system[0].dimension]])
 
         system = self.compute_rref() # 获取方程式对应的rref式
+        print system
 
         if has_not_solutions(system):
             return 0,None
@@ -426,10 +424,6 @@ def main():
     p4 = Plane(normal_vector=Vector(['1','0','-2']), constant_term='2')
     s = LinearSystem([p1,p2,p3,p4])
     t = s.compute_triangular_form()
-    t2 = s.compute_triangular_form_2()
-    print s
-    print t
-    print t2
     if not (t[0] == p1 and
     	t[1] == p2 and
     	t[2] == Plane(normal_vector=Vector(['0','0','-2']), constant_term='2') and
