@@ -345,7 +345,6 @@ class LinearSystem(object):
             Notes:
                 
             """
-
             return Vector([p.k for p in system[:system.dimension]])
 
         system = self.compute_rref() # 获取方程式对应的rref式

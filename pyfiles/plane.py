@@ -53,6 +53,7 @@ class Plane(object):
     """
 
     DIMENSION = 3
+    ALPHABET = ['X','Y','Z','L','M','N','O','P','Q','R','S','T','U','V','W']
     NONZERO_PARAM_NOT_FOUND = 'No zero parameter not exist!!'
 
     def __init__(self, normal_vector=None, constant_term=None):
@@ -126,7 +127,13 @@ class Plane(object):
         """
         重载Plane的str()方法，输出平面对应的一般式
         """
-        return '('+str(self.a)+')X+('+str(self.b)+')Y+('+str(self.c)+')Z'+'='+str(self.k)
+        res_str = ''
+        for i in range(len(self.params)):
+            param = self.params[i]
+            alpha = Plane.ALPHABET[i]
+            res_str += '('+str(param)+')'+alpha+'+'
+        res_str = res_str[:-1] + '='+str(self.k)
+        return res_str
 
     def __set_base_point(self):
         """
