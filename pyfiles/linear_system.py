@@ -143,98 +143,121 @@ class LinearSystem(object):
     def compute_triangular_form(self):
         """
         更抽象封装的方式实现该函数功能
-        """
-        system = deepcopy(self)
-
-        system.planes.sort() # step 1 : 对planes进行排序，是的符合三角形排列，从上到下，非0项元素角标依次增加
-
-        for i in range(len(system)-2,-1,-1): # step 2 : 将每一行首个不为0的元素对应列其他元素全部消掉
-            idx = system[i].first_nonzero_idx
-            if not idx is -1:
-                for j in range(i+1,len(system)):
-                    if j!=i and not LaDecimal(system[j].params[idx]).is_near_zero():
-                        system.add_multiple_times_row_to_row(-(system[j].params[idx]/system[i].params[idx]),i,j)
-
-        system.planes.sort() # step 3 : 再度排序避免由于step 2的影响
-
-        return system
-
-    def compute_triangular_form_2(self):
-        """
-        实现将方程组变化为三角形的函数
 
         Returns:
             result -- 形状为三角形的新LinearSystem对象
-
-        Notes:
-            1 -- 将零系数的行与下列行进行交换时，选择第一个满足要求的行进行交换，例如为了保证第一行的a不为0需要交行时，如果第2,3都满足，选择第2行
-            2 -- 不要将某一行乘以系数，也就是调用multiply_coefficient_and_row方法
-            3 -- 仅将几倍的行与它下方的行相加，也就是说为了消除第二行的x时，只能用第一行的n倍相加来消除
         """
+
+        def sort_planes(system):
+            """
+            对方程式进行排序，排序原则是根据首项非0元素的角标大小顺序排序，如果有不满足的情况，只与其下第一个满足条件的行交换
+
+            Args:
+                system -- 被排序的方程式组
+            """
+
+            for i in range(len(system)-1):
+                param_idx = i if i<system.dimension else system.dimension-1
+                if LaDecimal(system[i].params[param_idx]).is_near_zero():
+                    for j in range(i+1,len(system)):
+                        if not LaDecimal(system[j].params[param_idx]).is_near_zero():
+                            system.swap_rows(i,j)
+                            break
+                        
+
         system = deepcopy(self)
-        #######
-        # x
-        p1 = system[0]
-        if LaDecimal(p1.a).is_near_zero():
-            i = 1
-            for p in system[i:]:
-                if not LaDecimal(p.a).is_near_zero():
-                    system.swap_rows(0,i)
-                    break
-                i += 1
-            if i == len(system):
-                raise Exception(LinearSystem.NOT_CAN_SWAP_ROW)
-        p1 = system[0]
-        
-        # y
-        p2 = system[1]
-        if LaDecimal(p2.b).is_near_zero():
-            i = 2
-            for p in system[i:]:
-                if not LaDecimal(p.b).is_near_zero():
-                    system.swap_rows(1,i)
-                    break
-                i += 1
-            if i == len(system):
-                raise Exception(LinearSystem.NOT_CAN_SWAP_ROW)
-        p2 = system[1]
 
+        sort_planes(system) # step 1 : 对planes进行排序（排序方式是根据首项非0元素角标顺序排列），符合三角形排列
 
-        # z
-        for idx in range(2,len(system)):
-            pn = system[idx]
-            if LaDecimal(pn.c).is_near_zero():
-                i = idx + 1
-                for p in system[i:]:
-                    if not LaDecimal(p.c).is_near_zero():
-                        system.swap_rows(idx,i)
-                        break
-                    i += 1
-                if i == len(system):
-                    raise Exception(LinearSystem.NOT_CAN_SWAP_ROW)
+        for i in range(system.dimension if system.dimension<=len(system) else len(system)):#len(system)-2,-1,-1): # step 2 : 将每一行首个不为0的元素对应列其他元素全部消掉
+            idx = system[i].first_nonzero_idx
+            if not idx is -1:
+                for j in range(i+1,len(system)):
+                    if not LaDecimal(system[j].params[idx]).is_near_zero():
+                        system.add_multiple_times_row_to_row(-(system[j].params[idx]/system[i].params[idx]),i,j)
 
-        # 去x
-        for idx in range(1,len(system)):
-            p = system[idx]
-            p_pre = system[0]
-            if not LaDecimal(p.a).is_near_zero():
-                system.add_multiple_times_row_to_row(-(p.a/p_pre.a),0,idx)
+        #system.planes.sort() # step 3 : 再度排序避免由于step 2的影响
 
-        # 去y
-        for idx in range(2,len(system)):
-            p = system[idx]
-            p_pre = system[1]
-            if not LaDecimal(p.b).is_near_zero():
-                system.add_multiple_times_row_to_row(-(p.b/p_pre.b),1,idx)
-
-        # 去z
-        for idx in range(3,len(system)):
-            p = system[idx]
-            p_pre = system[2]
-            if not LaDecimal(p.c).is_near_zero():
-                system.add_multiple_times_row_to_row(-(p.c/p_pre.c),2,idx)
-        #######
         return system
+
+    
+    # so ugly code , i can`t see anymore!!!
+    # def compute_triangular_form_2(self):
+    #     """
+    #     实现将方程组变化为三角形的函数
+
+    #     Returns:
+    #         result -- 形状为三角形的新LinearSystem对象
+
+    #     Notes:
+    #         1 -- 将零系数的行与下列行进行交换时，选择第一个满足要求的行进行交换，例如为了保证第一行的a不为0需要交行时，如果第2,3都满足，选择第2行
+    #         2 -- 不要将某一行乘以系数，也就是调用multiply_coefficient_and_row方法
+    #         3 -- 仅将几倍的行与它下方的行相加，也就是说为了消除第二行的x时，只能用第一行的n倍相加来消除
+    #     """
+    #     system = deepcopy(self)
+    #     #######
+    #     # x
+    #     p1 = system[0]
+    #     if LaDecimal(p1.a).is_near_zero():
+    #         i = 1
+    #         for p in system[i:]:
+    #             if not LaDecimal(p.a).is_near_zero():
+    #                 system.swap_rows(0,i)
+    #                 break
+    #             i += 1
+    #         if i == len(system):
+    #             raise Exception(LinearSystem.NOT_CAN_SWAP_ROW)
+    #     p1 = system[0]
+    #     
+    #     # y
+    #     p2 = system[1]
+    #     if LaDecimal(p2.b).is_near_zero():
+    #         i = 2
+    #         for p in system[i:]:
+    #             if not LaDecimal(p.b).is_near_zero():
+    #                 system.swap_rows(1,i)
+    #                 break
+    #             i += 1
+    #         if i == len(system):
+    #             raise Exception(LinearSystem.NOT_CAN_SWAP_ROW)
+    #     p2 = system[1]
+
+
+    #     # z
+    #     for idx in range(2,len(system)):
+    #         pn = system[idx]
+    #         if LaDecimal(pn.c).is_near_zero():
+    #             i = idx + 1
+    #             for p in system[i:]:
+    #                 if not LaDecimal(p.c).is_near_zero():
+    #                     system.swap_rows(idx,i)
+    #                     break
+    #                 i += 1
+    #             if i == len(system):
+    #                 raise Exception(LinearSystem.NOT_CAN_SWAP_ROW)
+
+    #     # 去x
+    #     for idx in range(1,len(system)):
+    #         p = system[idx]
+    #         p_pre = system[0]
+    #         if not LaDecimal(p.a).is_near_zero():
+    #             system.add_multiple_times_row_to_row(-(p.a/p_pre.a),0,idx)
+
+    #     # 去y
+    #     for idx in range(2,len(system)):
+    #         p = system[idx]
+    #         p_pre = system[1]
+    #         if not LaDecimal(p.b).is_near_zero():
+    #             system.add_multiple_times_row_to_row(-(p.b/p_pre.b),1,idx)
+
+    #     # 去z
+    #     for idx in range(3,len(system)):
+    #         p = system[idx]
+    #         p_pre = system[2]
+    #         if not LaDecimal(p.c).is_near_zero():
+    #             system.add_multiple_times_row_to_row(-(p.c/p_pre.c),2,idx)
+    #     #######
+    #     return system
 
     def compute_rref(self):
         """
@@ -259,8 +282,8 @@ class LinearSystem(object):
                     system.multiply_coefficient_and_row(1/param_make_1,i)
                 for j in range(len(system)):
                     if j != i:
-                        p_make_0 = system[j]
-                        param_make_0 = p_make_0.params[p.first_nonzero_idx]
+                        param_make_0 = system[j].params[system[i].first_nonzero_idx]
+                        param_make_1 = system[i].params[system[i].first_nonzero_idx]
                         ratio = -(param_make_0 / param_make_1)
                         system.add_multiple_times_row_to_row(ratio,i,j) # 将该位置对应列其他元素全部消去
 
@@ -309,7 +332,7 @@ class LinearSystem(object):
                 algorithm -- 判断条件是有用的方程式个数是否不小于需要求的变量的个数
             """
             num_pivots = sum([1 if not p.first_nonzero_idx is -1 else 0 for p in system])
-            num_dimension = system[0].dimension
+            num_dimension = system.dimension
             return num_dimension > num_pivots
 
         def calc_solution(system):
@@ -323,10 +346,9 @@ class LinearSystem(object):
                 
             """
 
-            return Vector([p.k for p in system[:system[0].dimension]])
+            return Vector([p.k for p in system[:system.dimension]])
 
         system = self.compute_rref() # 获取方程式对应的rref式
-        print system
 
         if has_not_solutions(system):
             return 0,None
