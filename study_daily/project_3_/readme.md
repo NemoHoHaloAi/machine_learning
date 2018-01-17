@@ -1,2 +1,2 @@
 # README
-> https://github.com/nd009/linear_algebra
+> https://github.com/NemoHoHaloAi/linear_algebra
