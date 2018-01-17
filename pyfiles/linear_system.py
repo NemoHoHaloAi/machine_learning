@@ -17,6 +17,7 @@ from ladecimal import LaDecimal
 from plane import Plane
 from vector import Vector
 from copy import deepcopy
+from parameterization import Parameterization
 
 def enviroment_init():
     """
@@ -343,17 +344,40 @@ class LinearSystem(object):
                 system -- 求解的方程式组
 
             Notes:
-                
+                algorithm -- 当方程式化为rref式后且有唯一解时，此时等号左侧只剩下一个一个单独的系数为1的变量，右侧只剩下k值，因此各个k值就是答案
             """
             return Vector([p.k for p in system[:system.dimension]])
+
+        def calc_parameterization_solutions(system):
+            """
+            求解方程的解集
+
+            Args:
+                system -- 求解的方程式组
+
+            Notes:
+                algorithm -- 当方程式化为rref式后且有无数解时，通过化简得到方程式的解集
+                1 -- 先将所有方程式加起来
+                2 -- 忽略其中系数为0的变量
+                3 -- 将等号左边只保留一个变量，得到例如x=......这种格式的式子1
+                4 -- 此时表示x固定住后，其他变量都是自身得到y=y这种格式的式子2....
+            """
+            all_in_plane = Plane(Vector([sum([p.params[i] for p in system])for i in range(system.dimension)]),sum([p.k for p in system]))
+            print all_in_plane
+            vcts = [Vector([str(p.params[i]) for p in system]) for i in range(system.dimension)]
+            print vcts
+            prmzt = Parameterization(vcts[0], vcts[1:])
+            return prmzt
+
 
         system = self.compute_rref() # 获取方程式对应的rref式
 
         if has_not_solutions(system):
             return 0,None
         if has_so_much_solutions(system):
-            return -1,None
-        return 1,calc_solution(system)
+            return -1,calc_parameterization_solutions(system)
+        else:
+            return 1,calc_solution(system)
 
 
 def main():

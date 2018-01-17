@@ -146,6 +146,7 @@ class Vector(object):
             coordinates -- 向量值列表
         """
     	self.coordinates = tuple([Decimal(me) for me in coordinates])
+        self.dimension = len(self.coordinates)
 
     def __len__(self):
         """
