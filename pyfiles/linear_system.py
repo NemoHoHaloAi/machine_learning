@@ -362,19 +362,24 @@ class LinearSystem(object):
                 3 -- 将等号左边只保留一个变量，得到例如x=......这种格式的式子1
                 4 -- 此时表示x固定住后，其他变量都是自身得到y=y这种格式的式子2....
             """
-            all_in_plane = Plane(Vector([sum([p.params[i] for p in system])for i in range(system.dimension)]),sum([p.k for p in system]))
-            print all_in_plane
-            vcts = [Vector([str(p.params[i]) for p in system]) for i in range(system.dimension)]
-            print vcts
-            prmzt = Parameterization(vcts[0], vcts[1:])
-            return prmzt
+            # all_in_plane = Plane(Vector([sum([p.params[i] for p in system])for i in range(system.dimension)]),sum([p.k for p in system]))
+            for all_in_plane in system:
+                if not all_in_plane.first_nonzero_idx is -1:
+                    var1_str = 't'+str(all_in_plane.first_nonzero_idx+1)+' = '+str(all_in_plane.k/all_in_plane.params[all_in_plane.first_nonzero_idx])
+                    for i in range(all_in_plane.first_nonzero_idx+1,len(all_in_plane.params)):
+                        var1_str += '-'+'('+str(all_in_plane.params[i]/all_in_plane.params[all_in_plane.first_nonzero_idx])+')t'+str(i+1)
+                    print var1_str
+            #vcts = [Vector([str(p.params[i]) for p in system]) for i in range(system.dimension)]
+            #print vcts
+            #prmzt = Parameterization(vcts[0], vcts[1:])
+            return None # prmzt
 
 
         system = self.compute_rref() # 获取方程式对应的rref式
 
-        if has_not_solutions(system):
+        if has_not_solutions(system): # 判断是否无解
             return 0,None
-        if has_so_much_solutions(system):
+        if has_so_much_solutions(system): # 判断是否有无数个解
             return -1,calc_parameterization_solutions(system)
         else:
             return 1,calc_solution(system)
