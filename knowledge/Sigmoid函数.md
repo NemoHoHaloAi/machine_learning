@@ -6,7 +6,7 @@
 ![公式](https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/s%3D99/sign=a46bd6f1dd33c895a27e9472d01340df/0df3d7ca7bcb0a4659502a5f6f63f6246b60af62.jpg)
 
 ### 函数曲线图
-![函数图](https://baike.baidu.com/pic/Sigmoid%E5%87%BD%E6%95%B0/7981407/0/c9fcc3cec3fdfc03f23fbf16d73f8794a5c226dc?fr=lemma&ct=single)
+![函数图](https://gss0.bdstatic.com/94o3dSag_xI4khGkpoWK1HF6hhy/baike/s%3D220/sign=dc4b35fe37a85edffe8cf921795509d8/c9fcc3cec3fdfc03f23fbf16d73f8794a5c226dc.jpg)
 
 ### 对x的导数
 ![函数对x导数](https://gss1.bdstatic.com/-vo3dSag_xI4khGkpoWK1HF6hhy/baike/s%3D236/sign=375012cedfca7bcb797bc02c88086b3f/64380cd7912397dde41ab3095182b2b7d0a2875f.jpg)
